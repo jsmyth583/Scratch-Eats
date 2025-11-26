@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Scratch Eats – Instant Win Scratch Card</title>
+  <title>Scratch 'N' Eat – Instant Win Scratch Card</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Common Ninja script loaded globally -->
+  <!-- Common Ninja script -->
   <script src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
 
   <style>
     :root {
-      --red: #e64532;
+      --red: #e33222; /* Updated to match YOUR logo */
       --cream: #fff7e6;
       --dark: #222;
     }
@@ -26,7 +26,7 @@
       color: var(--dark);
     }
 
-    /* Hero header */
+    /* HERO HEADER */
     .hero-header {
       background: var(--red);
       color: var(--cream);
@@ -35,7 +35,7 @@
     }
 
     .hero-logo {
-      width: 340px;
+      width: 360px;
       max-width: 90%;
       display: block;
       margin: 0 auto;
@@ -57,6 +57,7 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
+    /* MAIN CONTENT */
     main {
       max-width: 700px;
       margin: 30px auto;
@@ -69,12 +70,17 @@
       padding: 24px 20px;
       box-shadow: 0 8px 22px rgba(0,0,0,0.08);
       margin-bottom: 24px;
-      position: relative; /* for overlay */
+      position: relative;
     }
 
-    h2 { margin-top: 0; }
+    h2 {
+      margin-top: 0;
+    }
 
-    form { display: grid; gap: 12px; }
+    form {
+      display: grid;
+      gap: 12px;
+    }
 
     input[type="text"],
     input[type="email"] {
@@ -96,9 +102,13 @@
       cursor: pointer;
     }
 
-    button:hover { opacity: 0.9; }
+    button:hover {
+      opacity: 0.9;
+    }
 
-    .hidden { display: none !important; }
+    .hidden {
+      display: none !important;
+    }
 
     .success-message {
       font-size: 0.95rem;
@@ -114,7 +124,7 @@
       color: #777;
     }
 
-    /* Overlay that locks the scratch card until signup */
+    /* OVERLAY TO LOCK SCRATCH CARD UNTIL FORM COMPLETE */
     .lock-overlay {
       position: absolute;
       inset: 0;
@@ -128,22 +138,26 @@
       z-index: 10;
     }
 
-    .lock-overlay p { margin: 0; font-weight: 600; color: #444; }
+    .lock-overlay p {
+      margin: 0;
+      font-weight: 600;
+      color: #444;
+    }
 
-    /* Give widget area some height so we can see it */
-    .cn-wrapper { min-height: 320px; }
-
+    .cn-wrapper {
+      min-height: 320px;
+    }
   </style>
 </head>
 
 <body>
 
 <header class="hero-header">
-  <img 
-    src="Scratch%20'N%20Eat%20Logo%20Design.png"
-    alt="Scratch 'N' Eat Logo"
-    class="hero-logo"
-  >
+  <!-- UPDATE THE FILENAME BELOW to match your actual PNG name -->
+  <img src="Scratch%20'N%20Eat%20Logo%20Design.png" 
+       alt="Scratch 'N' Eat Logo" 
+       class="hero-logo">
+
   <p class="tagline">Scratch. Win. Eat.</p>
 </header>
 
@@ -190,7 +204,7 @@
 </main>
 
 <footer>
-  &copy; <span id="year"></span> Scratch Eats. All rights reserved.
+  &copy; <span id="year"></span> Scratch 'N' Eat. All rights reserved.
 </footer>
 
 <script>
@@ -219,12 +233,16 @@
       return;
     }
 
+    // Hide signup form
     signupSection.classList.add("hidden");
 
+    // Unlock scratch card
     overlay.style.display = "none";
 
+    // Show success message
     successMessage.style.display = "block";
 
+    // Scroll to card
     widgetSection.scrollIntoView({ behavior: "smooth" });
   });
 </script>
