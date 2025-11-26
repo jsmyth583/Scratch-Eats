@@ -72,14 +72,9 @@
       position: relative; /* for overlay */
     }
 
-    h2 {
-      margin-top: 0;
-    }
+    h2 { margin-top: 0; }
 
-    form {
-      display: grid;
-      gap: 12px;
-    }
+    form { display: grid; gap: 12px; }
 
     input[type="text"],
     input[type="email"] {
@@ -101,13 +96,9 @@
       cursor: pointer;
     }
 
-    button:hover {
-      opacity: 0.9;
-    }
+    button:hover { opacity: 0.9; }
 
-    .hidden {
-      display: none !important;
-    }
+    .hidden { display: none !important; }
 
     .success-message {
       font-size: 0.95rem;
@@ -137,23 +128,22 @@
       z-index: 10;
     }
 
-    .lock-overlay p {
-      margin: 0;
-      font-weight: 600;
-      color: #444;
-    }
+    .lock-overlay p { margin: 0; font-weight: 600; color: #444; }
 
     /* Give widget area some height so we can see it */
-    .cn-wrapper {
-      min-height: 320px;
-    }
+    .cn-wrapper { min-height: 320px; }
+
   </style>
 </head>
 
 <body>
 
 <header class="hero-header">
-  <img src="scratch-eats-logo.png" alt="Scratch Eats Logo" class="hero-logo">
+  <img 
+    src="Scratch%20'N%20Eat%20Logo%20Design.png"
+    alt="Scratch 'N' Eat Logo"
+    class="hero-logo"
+  >
   <p class="tagline">Scratch. Win. Eat.</p>
 </header>
 
@@ -179,7 +169,7 @@
     </form>
   </section>
 
-  <!-- SCRATCH CARD WIDGET (always loaded, but locked with overlay) -->
+  <!-- SCRATCH CARD WIDGET -->
   <section class="card" id="widget-section">
     <div id="widget-overlay" class="lock-overlay">
       <p>Please sign up above to unlock your scratch card.</p>
@@ -193,7 +183,6 @@
     <p>Reveal your prize below:</p>
 
     <div class="cn-wrapper">
-      <!-- ⭐ YOUR Common Ninja scratch card widget ⭐ -->
       <div class="commonninja_component pid-a681398a-7a0d-4da8-90d1-598d4137f6f5"></div>
     </div>
   </section>
@@ -230,16 +219,12 @@
       return;
     }
 
-    // Hide form
     signupSection.classList.add("hidden");
 
-    // Remove overlay so card is playable
     overlay.style.display = "none";
 
-    // Show "You're in!" message
     successMessage.style.display = "block";
 
-    // Scroll to the scratch card
     widgetSection.scrollIntoView({ behavior: "smooth" });
   });
 </script>
