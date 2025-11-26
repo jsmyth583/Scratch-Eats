@@ -4,67 +4,54 @@
   <meta charset="UTF-8" />
   <title>Scratch Eats – Instant Win Scratch Card</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-<style>
-  :root {
-    --red: #e64532;
-    --cream: #fff7e6;
-    --dark: #222;
-  }
+  <style>
+    :root {
+      --red: #e64532;
+      --cream: #fff7e6;
+      --dark: #222;
+    }
 
-  /* all your existing CSS is here */
+    * {
+      box-sizing: border-box;
+    }
 
-  /* ⬇️ ADD THIS AT THE VERY BOTTOM OF YOUR <style> BLOCK ⬇️ */
-
-  /* New hero header styling */
-  .hero-header {
-    background: var(--red);
-    padding: 60px 20px 40px;
-    text-align: center;
-  }
-
-  /* Larger responsive logo with fade-in animation */
-  .hero-logo {
-    width: 340px;
-    max-width: 90%;
-    display: block;
-    margin: 0 auto;
-    opacity: 0;
-    animation: fadeIn 1.4s ease forwards;
-  }
-
-  /* Fade-in animation */
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-</style>
-
-    * { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: system-ui, sans-serif;
       background: var(--cream);
       color: var(--dark);
     }
-    header {
+
+    /* New hero header styling */
+    .hero-header {
       background: var(--red);
       color: var(--cream);
-      padding: 40px 20px;
+      padding: 60px 20px 40px;
       text-align: center;
     }
-    header img {
-      width: 150px;
-      max-width: 60%;
+
+    /* Larger responsive logo with fade-in animation */
+    .hero-logo {
+      width: 340px;
+      max-width: 90%;
       display: block;
-      margin: 0 auto 20px;
+      margin: 0 auto;
+      opacity: 0;
+      animation: fadeIn 1.4s ease forwards;
     }
-    header h1 { margin: 0 0 10px; font-size: 2.4rem; }
+
+    /* Fade-in animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     main {
       max-width: 700px;
       margin: 30px auto;
       padding: 0 20px;
     }
+
     .card {
       background: #fff;
       border-radius: 16px;
@@ -72,15 +59,25 @@
       box-shadow: 0 8px 22px rgba(0,0,0,0.08);
       margin-bottom: 24px;
     }
-    h2 { margin-top: 0; }
-    form { display: grid; gap: 12px; }
-    input[type="text"], input[type="email"] {
+
+    h2 {
+      margin-top: 0;
+    }
+
+    form {
+      display: grid;
+      gap: 12px;
+    }
+
+    input[type="text"],
+    input[type="email"] {
       width: 100%;
       padding: 10px 12px;
       border-radius: 10px;
       border: 1px solid #ccc;
       font-size: 0.95rem;
     }
+
     button {
       padding: 12px 18px;
       border-radius: 999px;
@@ -91,16 +88,22 @@
       font-size: 1rem;
       cursor: pointer;
     }
+
     button:hover {
       opacity: 0.9;
     }
-    .hidden { display: none !important; }
+
+    .hidden {
+      display: none !important;
+    }
+
     .success-message {
       font-size: 0.95rem;
       margin-bottom: 6px;
       color: #0b7a34;
       font-weight: 600;
     }
+
     footer {
       text-align: center;
       padding: 20px;
@@ -115,7 +118,6 @@
 <header class="hero-header">
   <img src="scratch-eats-logo.png" alt="Scratch Eats Logo" class="hero-logo">
 </header>
-
 
 <main>
 
