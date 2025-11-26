@@ -39,6 +39,15 @@
       animation: fadeIn 1.4s ease forwards;
     }
 
+    .tagline {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--cream);
+      margin-top: 15px;
+      opacity: 0;
+      animation: fadeIn 1.6s ease forwards 0.3s;
+    }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -115,6 +124,7 @@
 
 <header class="hero-header">
   <img src="scratch-eats-logo.png" alt="Scratch Eats Logo" class="hero-logo">
+  <p class="tagline">Scratch. Win. Eat.</p>
 </header>
 
 <main>
