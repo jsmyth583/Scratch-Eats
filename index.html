@@ -10,14 +10,13 @@
 
   <style>
     :root {
-      --red: #e33222; /* Updated to match YOUR logo */
+      /* Updated red to match your new logo EXACTLY */
+      --red: #e53228;
       --cream: #fff7e6;
       --dark: #222;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -26,7 +25,7 @@
       color: var(--dark);
     }
 
-    /* HERO HEADER */
+    /* Hero header */
     .hero-header {
       background: var(--red);
       color: var(--cream);
@@ -35,7 +34,7 @@
     }
 
     .hero-logo {
-      width: 360px;
+      width: 340px;
       max-width: 90%;
       display: block;
       margin: 0 auto;
@@ -57,7 +56,6 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* MAIN CONTENT */
     main {
       max-width: 700px;
       margin: 30px auto;
@@ -73,17 +71,9 @@
       position: relative;
     }
 
-    h2 {
-      margin-top: 0;
-    }
+    form { display: grid; gap: 12px; }
 
-    form {
-      display: grid;
-      gap: 12px;
-    }
-
-    input[type="text"],
-    input[type="email"] {
+    input[type="text"], input[type="email"] {
       width: 100%;
       padding: 10px 12px;
       border-radius: 10px;
@@ -102,13 +92,7 @@
       cursor: pointer;
     }
 
-    button:hover {
-      opacity: 0.9;
-    }
-
-    .hidden {
-      display: none !important;
-    }
+    .hidden { display: none !important; }
 
     .success-message {
       font-size: 0.95rem;
@@ -124,37 +108,29 @@
       color: #777;
     }
 
-    /* OVERLAY TO LOCK SCRATCH CARD UNTIL FORM COMPLETE */
     .lock-overlay {
       position: absolute;
       inset: 0;
+      background: rgba(255,247,230,0.95);
       border-radius: 16px;
-      background: rgba(255, 247, 230, 0.95);
       display: flex;
       align-items: center;
       justify-content: center;
-      text-align: center;
       padding: 20px;
       z-index: 10;
+      text-align: center;
     }
 
-    .lock-overlay p {
-      margin: 0;
-      font-weight: 600;
-      color: #444;
-    }
+    .cn-wrapper { min-height: 320px; }
 
-    .cn-wrapper {
-      min-height: 320px;
-    }
   </style>
 </head>
 
 <body>
 
 <header class="hero-header">
-  <!-- UPDATE THE FILENAME BELOW to match your actual PNG name -->
-  <img src="Scratch%20'N%20Eat%20Logo%20Design.png" 
+  <!-- NEW LOGO INSERTED HERE -->
+  <img src="Scratch 'N Eat Logo Design.png" 
        alt="Scratch 'N' Eat Logo" 
        class="hero-logo">
 
@@ -163,33 +139,27 @@
 
 <main>
 
-  <!-- SIGN-UP FORM -->
   <section class="card" id="signup-section">
     <h2>Sign up to play</h2>
     <p>Enter your details below to unlock your scratch card.</p>
 
     <form id="signup-form" novalidate>
-      <div>
-        <label for="name">Name *</label>
-        <input type="text" id="name" required />
-      </div>
+      <label>Name *</label>
+      <input type="text" id="name" required />
 
-      <div>
-        <label for="email">Email *</label>
-        <input type="email" id="email" required />
-      </div>
+      <label>Email *</label>
+      <input type="email" id="email" required />
 
       <button type="submit">Start Scratching</button>
     </form>
   </section>
 
-  <!-- SCRATCH CARD WIDGET -->
   <section class="card" id="widget-section">
     <div id="widget-overlay" class="lock-overlay">
       <p>Please sign up above to unlock your scratch card.</p>
     </div>
 
-    <div class="success-message" id="success-message" style="display:none;">
+    <div id="success-message" class="success-message" style="display:none;">
       You're in! Your scratch card is ready.
     </div>
 
@@ -204,17 +174,17 @@
 </main>
 
 <footer>
-  &copy; <span id="year"></span> Scratch 'N' Eat. All rights reserved.
+  © <span id="year"></span> Scratch 'N' Eat. All rights reserved.
 </footer>
 
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
 
   const form = document.getElementById("signup-form");
-  const signupSection = document.getElementById("signup-section");
-  const widgetSection = document.getElementById("widget-section");
   const overlay = document.getElementById("widget-overlay");
   const successMessage = document.getElementById("success-message");
+  const signupSection = document.getElementById("signup-section");
+  const widgetSection = document.getElementById("widget-section");
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -227,22 +197,15 @@
       return;
     }
 
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(email)) {
+    const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if (!valid) {
       alert("Please enter a valid email.");
       return;
     }
 
-    // Hide signup form
     signupSection.classList.add("hidden");
-
-    // Unlock scratch card
     overlay.style.display = "none";
-
-    // Show success message
     successMessage.style.display = "block";
-
-    // Scroll to card
     widgetSection.scrollIntoView({ behavior: "smooth" });
   });
 </script>
