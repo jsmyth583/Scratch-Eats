@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Scratch Eats – Instant Win Scratch Card</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --red: #e64532;
+      --cream: #fff7e6;
+      --dark: #222;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--dark);
+    }
+    header {
+      background: var(--red);
+      color: var(--cream);
+      padding: 40px 20px;
+      text-align: center;
+    }
+    header img {
+      width: 150px;
+      max-width: 60%;
+      display: block;
+      margin: 0 auto 20px;
+    }
+    header h1 { margin: 0 0 10px; font-size: 2.4rem; }
+    main {
+      max-width: 700px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px 20px;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+      margin-bottom: 24px;
+    }
+    h2 { margin-top: 0; }
+    form { display: grid; gap: 12px; }
+    input[type="text"], input[type="email"] {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 0.95rem;
+    }
+    button {
+      padding: 12px 18px;
+      border-radius: 999px;
+      border: none;
+      background: var(--red);
+      color: var(--cream);
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+    .hidden { display: none !important; }
+    .success-message {
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+      color: #0b7a34;
+      font-weight: 600;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.8rem;
+      color: #777;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <!-- Hosted logo image -->
+  <img src="https://i.imgur.com/4gV0uZ5.png" alt="Scratch Eats Logo">
+  <h1>Scratch Eats</h1>
+  <p>Free-to-play instant win scratch card. Sign up to start scratching!</p>
+</header>
+
+<main>
+
+  <!-- SIGN-UP FORM -->
+  <section class="card" id="signup-section">
+    <h2>Sign up to play</h2>
+    <p>Enter your details below to unlock the Scratch Eats card.</p>
+
+    <form id="signup-form" novalidate>
+      <div>
+        <label for="name">Name *</label>
+        <input type="text" id="name" required />
+      </div>
+
+      <div>
+        <label for="email">Email *</label>
+        <input type="email" id="email" required />
+      </div>
+
+      <button type="submit">Start Scratching</button>
+    </form>
+  </section>
+
+  <!-- SCRATCH WIDGET -->
+  <section class="card hidden" id="widget-section">
+    <div class="success-message">
+      You're in! Your scratch card is ready below.
+    </div>
+
+    <h2>Scratch &amp; Win</h2>
+    <p>Reveal your prize below:</p>
+
+    <!-- Common Ninja widget -->
+    <script src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
+    <div class="commonninja_component pid-a681398a-7a0d-4da8-90d1-598d4137f6f5"></div>
+
+  </section>
+</main>
+
+<footer>
+  &copy; <span id="year"></span> Scratch Eats. All rights reserved.
+</footer>
+
+<script>
+  // Set current year in footer
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const form = document.getElementById("signup-form");
+  const signupSection = document.getElementById("signup-section");
+  const widgetSection = document.getElementById("widget-section");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+
+    if (!name || !email) {
+      alert("Please enter both your name and email to continue.");
+      return;
+    }
+
+    const emailPattern = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+    if (!emailPattern.test(email)) {
+      alert("Please enter a valid email.");
+      return;
+    }
+
+    // Hide sign-up + show widget
+    signupSection.classList.add("hidden");
+    widgetSection.classList.remove("hidden");
+  });
+</script>
+
+</body>
+</html>
