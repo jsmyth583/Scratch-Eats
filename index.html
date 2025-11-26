@@ -65,6 +65,7 @@
       padding: 24px 20px;
       box-shadow: 0 8px 22px rgba(0,0,0,0.08);
       margin-bottom: 24px;
+      position: relative; /* needed for overlay */
     }
 
     h2 {
@@ -117,6 +118,26 @@
       font-size: 0.8rem;
       color: #777;
     }
+
+    /* Overlay that locks the scratch card until signup */
+    .lock-overlay {
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      background: rgba(255, 247, 230, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      z-index: 10;
+    }
+
+    .lock-overlay p {
+      margin: 0;
+      font-weight: 600;
+      color: #444;
+    }
   </style>
 </head>
 
@@ -149,16 +170,20 @@
     </form>
   </section>
 
-  <!-- SCRATCH CARD WIDGET -->
-  <section class="card hidden" id="widget-section">
-    <div class="success-message">
+  <!-- SCRATCH CARD WIDGET (always loaded, but locked with overlay) -->
+  <section class="card" id="widget-section">
+    <div id="widget-overlay" class="lock-overlay">
+      <p>Please sign up above to unlock your scratch card.</p>
+    </div>
+
+    <div class="success-message" id="success-message" style="display:none;">
       You're in! Your scratch card is ready.
     </div>
 
     <h2>Scratch &amp; Win</h2>
     <p>Reveal your prize below:</p>
 
-    <!-- ⭐ NEW COMMON NINJA SCRATCH CARD WIDGET ⭐ -->
+    <!-- Common Ninja scratch card widget -->
     <script src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
     <div class="commonninja_component pid-257f3c41-8ca6-435a-b810-0293974f32b6"></div>
 
@@ -176,6 +201,8 @@
   const form = document.getElementById("signup-form");
   const signupSection = document.getElementById("signup-section");
   const widgetSection = document.getElementById("widget-section");
+  const overlay = document.getElementById("widget-overlay");
+  const successMessage = document.getElementById("success-message");
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -194,9 +221,19 @@
       return;
     }
 
-    // Hide form, show scratch card
+    // OPTIONAL: here is where you can also send to Google Sheets later
+
+    // Hide form
     signupSection.classList.add("hidden");
-    widgetSection.classList.remove("hidden");
+
+    // Remove overlay so card is playable
+    overlay.style.display = "none";
+
+    // Show "You're in!" message
+    successMessage.style.display = "block";
+
+    // Scroll to the scratch card
+    widgetSection.scrollIntoView({ behavior: "smooth" });
   });
 </script>
 
