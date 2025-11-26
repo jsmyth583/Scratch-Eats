@@ -22,7 +22,7 @@
       color: var(--dark);
     }
 
-    /* Hero header with big logo */
+    /* Hero header */
     .hero-header {
       background: var(--red);
       color: var(--cream);
@@ -132,7 +132,7 @@
   <!-- SIGN-UP FORM -->
   <section class="card" id="signup-section">
     <h2>Sign up to play</h2>
-    <p>Enter your details below to unlock the Scratch Eats card.</p>
+    <p>Enter your details below to unlock your scratch card.</p>
 
     <form id="signup-form" novalidate>
       <div>
@@ -149,20 +149,21 @@
     </form>
   </section>
 
-  <!-- SCRATCH WIDGET -->
+  <!-- SCRATCH CARD WIDGET -->
   <section class="card hidden" id="widget-section">
     <div class="success-message">
-      You're in! Your scratch card is ready below.
+      You're in! Your scratch card is ready.
     </div>
 
     <h2>Scratch &amp; Win</h2>
     <p>Reveal your prize below:</p>
 
-    <!-- ✅ NEW Common Ninja widget code -->
+    <!-- ⭐ NEW COMMON NINJA SCRATCH CARD WIDGET ⭐ -->
     <script src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
     <div class="commonninja_component pid-257f3c41-8ca6-435a-b810-0293974f32b6"></div>
 
   </section>
+
 </main>
 
 <footer>
@@ -170,7 +171,6 @@
 </footer>
 
 <script>
-  // Set current year in footer
   document.getElementById("year").textContent = new Date().getFullYear();
 
   const form = document.getElementById("signup-form");
@@ -184,7 +184,7 @@
     const email = document.getElementById("email").value.trim();
 
     if (!name || !email) {
-      alert("Please enter both your name and email to continue.");
+      alert("Please enter both your name and email.");
       return;
     }
 
@@ -194,7 +194,7 @@
       return;
     }
 
-    // Hide sign-up + show widget (gating)
+    // Hide form, show scratch card
     signupSection.classList.add("hidden");
     widgetSection.classList.remove("hidden");
   });
