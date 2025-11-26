@@ -4,12 +4,42 @@
   <meta charset="UTF-8" />
   <title>Scratch Eats – Instant Win Scratch Card</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    :root {
-      --red: #e64532;
-      --cream: #fff7e6;
-      --dark: #222;
-    }
+<style>
+  :root {
+    --red: #e64532;
+    --cream: #fff7e6;
+    --dark: #222;
+  }
+
+  /* all your existing CSS is here */
+
+  /* ⬇️ ADD THIS AT THE VERY BOTTOM OF YOUR <style> BLOCK ⬇️ */
+
+  /* New hero header styling */
+  .hero-header {
+    background: var(--red);
+    padding: 60px 20px 40px;
+    text-align: center;
+  }
+
+  /* Larger responsive logo with fade-in animation */
+  .hero-logo {
+    width: 340px;
+    max-width: 90%;
+    display: block;
+    margin: 0 auto;
+    opacity: 0;
+    animation: fadeIn 1.4s ease forwards;
+  }
+
+  /* Fade-in animation */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+</style>
+
     * { box-sizing: border-box; }
     body {
       margin: 0;
