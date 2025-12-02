@@ -10,8 +10,7 @@
 
   <style>
     :root {
-      /* EXACT RED TAKEN FROM YOUR LOGO */
-      --red: #EE2E1E;
+      --red: #EE2E1E; /* Exact red from your logo */
       --cream: #fff7e6;
       --dark: #222;
     }
@@ -25,16 +24,16 @@
       color: var(--dark);
     }
 
-    /* Hero header */
+    /* Header */
     .hero-header {
       background: var(--red);
       color: var(--cream);
-      padding: 60px 20px 40px;
+      padding: 50px 20px;
       text-align: center;
     }
 
     .hero-logo {
-      width: 340px;
+      width: 320px;
       max-width: 90%;
       display: block;
       margin: 0 auto;
@@ -45,15 +44,14 @@
     .tagline {
       font-size: 1.6rem;
       font-weight: 700;
-      color: var(--cream);
-      margin-top: 15px;
+      margin-top: 12px;
       opacity: 0;
       animation: fadeIn 1.6s ease forwards 0.3s;
     }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     main {
@@ -68,60 +66,33 @@
       padding: 24px 20px;
       box-shadow: 0 8px 22px rgba(0,0,0,0.08);
       margin-bottom: 24px;
-      position: relative;
     }
 
-    h2 {
-      margin-top: 0;
-    }
-
-    form { 
-      display: grid; 
-      gap: 12px; 
-    }
-
-    label {
-      font-size: 0.9rem;
-      font-weight: 600;
-      margin-bottom: 2px;
-    }
-
-    input[type="text"], input[type="email"] {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      font-size: 0.95rem;
-    }
+    h2 { margin-top: 0; }
 
     button {
       padding: 12px 18px;
+      width: 100%;
       border-radius: 999px;
       border: none;
       background: var(--red);
       color: var(--cream);
-      font-weight: 700;
       font-size: 1rem;
+      font-weight: 700;
       cursor: pointer;
     }
 
     button:hover { opacity: 0.9; }
 
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
     .hidden { display: none !important; }
-
-    .success-message {
-      font-size: 0.95rem;
-      margin-bottom: 6px;
-      color: #0b7a34;
-      font-weight: 600;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      font-size: 0.8rem;
-      color: #777;
-    }
 
     .lock-overlay {
       position: absolute;
@@ -132,53 +103,32 @@
       align-items: center;
       justify-content: center;
       padding: 20px;
-      z-index: 10;
       text-align: center;
+      z-index: 10;
     }
 
-    .cn-wrapper { min-height: 320px; }
+    .success-message {
+      color: #0b7a34;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
 
-    /* 📱 Mobile responsiveness */
+    .cn-wrapper {
+      min-height: 320px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.8rem;
+      color: #777;
+    }
+
+    /* Mobile adjustments */
     @media (max-width: 600px) {
-      .hero-header {
-        padding: 32px 16px 24px;
-      }
-
-      .hero-logo {
-        width: 260px;
-      }
-
-      .tagline {
-        font-size: 1.3rem;
-        margin-top: 10px;
-      }
-
-      main {
-        margin: 20px auto;
-        padding: 0 16px;
-      }
-
-      .card {
-        padding: 18px 16px;
-        border-radius: 12px;
-      }
-
-      h2 {
-        font-size: 1.3rem;
-      }
-
-      p {
-        font-size: 0.95rem;
-      }
-
-      button {
-        width: 100%;
-      }
-
-      .lock-overlay {
-        padding: 16px;
-        font-size: 0.9rem;
-      }
+      .hero-logo { width: 260px; }
+      .tagline { font-size: 1.3rem; }
+      .card { padding: 18px; }
     }
   </style>
 </head>
@@ -186,42 +136,53 @@
 <body>
 
 <header class="hero-header">
-  <!-- Make sure this filename matches exactly what’s in your repo -->
-  <img src="Scratch 'N' Eat Logo Design.png"
-       alt="Scratch 'N' Eat Logo"
-       class="hero-logo">
-
+  <img src="Scratch 'N' Eat Logo Design.png" alt="Scratch 'N' Eat Logo" class="hero-logo">
   <p class="tagline">Scratch. Win. Eat.</p>
 </header>
 
 <main>
 
-  <section class="card" id="signup-section">
+  <!-- STEP 1: Show fixed town/cuisine/business -->
+  <section class="card" id="step1">
+    <h2>Your Selected Takeaway</h2>
+    <p>You are playing for:</p>
+
+    <ul style="font-size:1.1rem; font-weight:600; line-height:1.5;">
+      <li><strong>Town:</strong> Bangor</li>
+      <li><strong>Cuisine:</strong> Indian</li>
+      <li><strong>Business:</strong> Star Of Bengal</li>
+    </ul>
+
+    <button id="continue-btn">Continue</button>
+  </section>
+
+  <!-- STEP 2: Sign Up -->
+  <section class="card hidden" id="signup-section">
     <h2>Sign up to play</h2>
-    <p>Enter your details below to unlock your scratch card.</p>
+    <p>Enter your details to access Star Of Bengal’s scratch card.<br>You can play once every 7 days.</p>
 
-    <form id="signup-form" novalidate>
-      <label for="name">Name *</label>
-      <input type="text" id="name" required />
+    <form id="signup-form">
+      <label>Name *</label>
+      <input type="text" id="name" required>
 
-      <label for="email">Email *</label>
-      <input type="email" id="email" required />
+      <label>Email *</label>
+      <input type="email" id="email" required>
 
-      <button type="submit">Start Scratching</button>
+      <button type="submit">Unlock Scratch Card</button>
     </form>
   </section>
 
-  <section class="card" id="widget-section">
-    <div id="widget-overlay" class="lock-overlay">
+  <!-- STEP 3: Scratch Card -->
+  <section class="card hidden" id="scratch-section" style="position:relative;">
+    <div id="overlay" class="lock-overlay">
       <p>Please sign up above to unlock your scratch card.</p>
     </div>
 
-    <div id="success-message" class="success-message" style="display:none;">
-      You're in! Your scratch card is ready.
+    <div id="success" class="success-message hidden">
+      You're in! Good luck 🍀
     </div>
 
-    <h2>Scratch &amp; Win</h2>
-    <p>Reveal your prize below:</p>
+    <h2>Scratch & Win – Star Of Bengal</h2>
 
     <div class="cn-wrapper">
       <div class="commonninja_component pid-a681398a-7a0d-4da8-90d1-598d4137f6f5"></div>
@@ -237,33 +198,48 @@
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
 
-  const form = document.getElementById("signup-form");
-  const overlay = document.getElementById("widget-overlay");
-  const successMessage = document.getElementById("success-message");
+  const continueBtn = document.getElementById("continue-btn");
+  const step1 = document.getElementById("step1");
   const signupSection = document.getElementById("signup-section");
-  const widgetSection = document.getElementById("widget-section");
+  const scratchSection = document.getElementById("scratch-section");
+  const signupForm = document.getElementById("signup-form");
+  const overlay = document.getElementById("overlay");
+  const success = document.getElementById("success");
 
-  form.addEventListener("submit", function (e) {
+  // Step 1 → Step 2
+  continueBtn.addEventListener("click", () => {
+    step1.classList.add("hidden");
+    signupSection.classList.remove("hidden");
+  });
+
+  // Step 2 → Unlock scratch card
+  signupForm.addEventListener("submit", function(e) {
     e.preventDefault();
 
     const name = document.getElementById("name").value.trim();
     const email = document.getElementById("email").value.trim();
 
-    if (!name || !email) {
-      alert("Please enter both your name and email.");
-      return;
+    if (!name || !email) return alert("Please enter name and email.");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+      return alert("Enter a valid email address.");
+
+    // Once per week limit
+    const key = "sne_last_play_" + email.toLowerCase();
+    const last = localStorage.getItem(key);
+    const now = Date.now();
+    const week = 7 * 24 * 60 * 60 * 1000;
+
+    if (last && now - last < week) {
+      const daysLeft = Math.ceil((week - (now - last)) / (86400000));
+      return alert("You already played this week. Try again in " + daysLeft + " day(s).");
     }
 
-    const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    if (!valid) {
-      alert("Please enter a valid email.");
-      return;
-    }
+    localStorage.setItem(key, now);
 
     signupSection.classList.add("hidden");
+    scratchSection.classList.remove("hidden");
     overlay.style.display = "none";
-    successMessage.style.display = "block";
-    widgetSection.scrollIntoView({ behavior: "smooth" });
+    success.classList.remove("hidden");
   });
 </script>
 
