@@ -66,9 +66,27 @@
       padding: 24px 20px;
       box-shadow: 0 8px 22px rgba(0,0,0,0.08);
       margin-bottom: 24px;
+      position: relative;
     }
 
     h2 { margin-top: 0; }
+
+    label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 2px;
+      display: block;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
 
     button {
       padding: 12px 18px;
@@ -83,14 +101,6 @@
     }
 
     button:hover { opacity: 0.9; }
-
-    input, select {
-      width: 100%;
-      padding: 10px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-    }
 
     .hidden { display: none !important; }
 
@@ -115,6 +125,11 @@
 
     .cn-wrapper {
       min-height: 320px;
+    }
+
+    .selection-summary {
+      font-weight: 600;
+      margin-bottom: 10px;
     }
 
     footer {
@@ -142,51 +157,69 @@
 
 <main>
 
-  <!-- STEP 1: Show fixed town/cuisine/business -->
+  <!-- STEP 1: Choose town, cuisine, business -->
   <section class="card" id="step1">
-    <h2>Your Selected Takeaway</h2>
-    <p>You are playing for:</p>
+    <h2>Choose your takeaway</h2>
+    <p>Select your town, cuisine and business to see the scratch card.</p>
 
-    <ul style="font-size:1.1rem; font-weight:600; line-height:1.5;">
-      <li><strong>Town:</strong> Bangor</li>
-      <li><strong>Cuisine:</strong> Indian</li>
-      <li><strong>Business:</strong> Star Of Bengal</li>
-    </ul>
+    <form id="choose-form">
+      <label for="town">Town *</label>
+      <select id="town" required>
+        <option value="">Select your town</option>
+        <option value="Bangor">Bangor</option>
+        <!-- more towns later -->
+      </select>
 
-    <button id="continue-btn">Continue</button>
+      <label for="cuisine">Cuisine *</label>
+      <select id="cuisine" required>
+        <option value="">Select cuisine</option>
+        <option value="Indian">Indian</option>
+        <!-- more cuisines later -->
+      </select>
+
+      <label for="business">Business *</label>
+      <select id="business" required disabled>
+        <option value="">Select town & cuisine first</option>
+      </select>
+
+      <button type="submit">Continue</button>
+    </form>
   </section>
 
-  <!-- STEP 2: Sign Up -->
-  <section class="card hidden" id="signup-section">
-    <h2>Sign up to play</h2>
-    <p>Enter your details to access Star Of Bengal’s scratch card.<br>You can play once every 7 days.</p>
+  <!-- STEP 2: Scratch card page with sign up/in -->
+  <section class="card hidden" id="step2">
+    <h2 id="business-title">Scratch & Win</h2>
+    <p id="business-summary" class="selection-summary"></p>
+
+    <p><strong>Sign up or sign in to play.</strong></p>
 
     <form id="signup-form">
-      <label>Name *</label>
+      <label for="name">Name *</label>
       <input type="text" id="name" required>
 
-      <label>Email *</label>
+      <label for="email">Email *</label>
       <input type="email" id="email" required>
 
       <button type="submit">Unlock Scratch Card</button>
     </form>
-  </section>
 
-  <!-- STEP 3: Scratch Card -->
-  <section class="card hidden" id="scratch-section" style="position:relative;">
-    <div id="overlay" class="lock-overlay">
-      <p>Please sign up above to unlock your scratch card.</p>
-    </div>
+    <section class="card" style="margin-top:16px; position:relative;">
+      <div id="overlay" class="lock-overlay">
+        <p>Please sign up or sign in above to play this scratch card.</p>
+      </div>
 
-    <div id="success" class="success-message hidden">
-      You're in! Good luck 🍀
-    </div>
+      <div id="success" class="success-message hidden">
+        You're in! Good luck 🍀
+      </div>
 
-    <h2>Scratch & Win – Star Of Bengal</h2>
+      <h3>Scratch &amp; Win</h3>
+      <p>Reveal your prize below:</p>
 
-    <div class="cn-wrapper">
-      <div class="commonninja_component pid-a681398a-7a0d-4da8-90d1-598d4137f6f5"></div>
-    </div>
+      <div class="cn-wrapper">
+        <!-- For now, same widget for all businesses -->
+        <div class="commonninja_component pid-a681398a-7a0d-4da8-90d1-598d4137f6f5"></div>
+      </div>
+    </section>
   </section>
 
 </main>
@@ -198,48 +231,126 @@
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
 
-  const continueBtn = document.getElementById("continue-btn");
   const step1 = document.getElementById("step1");
-  const signupSection = document.getElementById("signup-section");
-  const scratchSection = document.getElementById("scratch-section");
+  const step2 = document.getElementById("step2");
+  const chooseForm = document.getElementById("choose-form");
   const signupForm = document.getElementById("signup-form");
+
+  const townSelect = document.getElementById("town");
+  const cuisineSelect = document.getElementById("cuisine");
+  const businessSelect = document.getElementById("business");
+
+  const businessTitle = document.getElementById("business-title");
+  const businessSummary = document.getElementById("business-summary");
   const overlay = document.getElementById("overlay");
   const success = document.getElementById("success");
 
+  // For now, you only have: Bangor → Indian → Star Of Bengal
+  // Structure is ready to add more later.
+  const BUSINESS_DATA = {
+    "Bangor": {
+      "Indian": ["Star Of Bengal"]
+    }
+  };
+
+  function updateBusinesses() {
+    const town = townSelect.value;
+    const cuisine = cuisineSelect.value;
+
+    businessSelect.innerHTML = "";
+    businessSelect.disabled = true;
+
+    if (!town || !cuisine) {
+      const opt = document.createElement("option");
+      opt.value = "";
+      opt.textContent = "Select town & cuisine first";
+      businessSelect.appendChild(opt);
+      return;
+    }
+
+    const townData = BUSINESS_DATA[town];
+    if (!townData || !townData[cuisine] || townData[cuisine].length === 0) {
+      const opt = document.createElement("option");
+      opt.value = "";
+      opt.textContent = "No businesses available yet";
+      businessSelect.appendChild(opt);
+      return;
+    }
+
+    const placeholder = document.createElement("option");
+    placeholder.value = "";
+    placeholder.textContent = "Select a business";
+    businessSelect.appendChild(placeholder);
+
+    townData[cuisine].forEach(name => {
+      const opt = document.createElement("option");
+      opt.value = name;
+      opt.textContent = name;
+      businessSelect.appendChild(opt);
+    });
+
+    businessSelect.disabled = false;
+  }
+
+  townSelect.addEventListener("change", updateBusinesses);
+  cuisineSelect.addEventListener("change", updateBusinesses);
+
   // Step 1 → Step 2
-  continueBtn.addEventListener("click", () => {
+  chooseForm.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const town = townSelect.value.trim();
+    const cuisine = cuisineSelect.value.trim();
+    const business = businessSelect.value.trim();
+
+    if (!town || !cuisine || !business) {
+      alert("Please select town, cuisine and business.");
+      return;
+    }
+
+    businessTitle.textContent = "Scratch & Win – " + business;
+    businessSummary.textContent = town + " • " + cuisine + " • " + business;
+
     step1.classList.add("hidden");
-    signupSection.classList.remove("hidden");
+    step2.classList.remove("hidden");
+    step2.scrollIntoView({ behavior: "smooth" });
   });
 
-  // Step 2 → Unlock scratch card
+  // Sign up / sign in → unlock scratch card
   signupForm.addEventListener("submit", function(e) {
     e.preventDefault();
 
     const name = document.getElementById("name").value.trim();
     const email = document.getElementById("email").value.trim();
 
-    if (!name || !email) return alert("Please enter name and email.");
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-      return alert("Enter a valid email address.");
+    if (!name || !email) {
+      alert("Please enter name and email.");
+      return;
+    }
 
-    // Once per week limit
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      alert("Enter a valid email address.");
+      return;
+    }
+
+    // Once per week limit per email (per device/browser)
     const key = "sne_last_play_" + email.toLowerCase();
     const last = localStorage.getItem(key);
     const now = Date.now();
     const week = 7 * 24 * 60 * 60 * 1000;
 
     if (last && now - last < week) {
-      const daysLeft = Math.ceil((week - (now - last)) / (86400000));
-      return alert("You already played this week. Try again in " + daysLeft + " day(s).");
+      const daysLeft = Math.ceil((week - (now - last)) / 86400000);
+      alert("You already played this week. Try again in " + daysLeft + " day(s).");
+      return;
     }
 
-    localStorage.setItem(key, now);
+    localStorage.setItem(key, String(now));
 
-    signupSection.classList.add("hidden");
-    scratchSection.classList.remove("hidden");
+    // Unlock scratch card
     overlay.style.display = "none";
     success.classList.remove("hidden");
+    step2.scrollIntoView({ behavior: "smooth" });
   });
 </script>
 
