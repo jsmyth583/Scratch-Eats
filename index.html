@@ -71,7 +71,20 @@
       position: relative;
     }
 
-    form { display: grid; gap: 12px; }
+    h2 {
+      margin-top: 0;
+    }
+
+    form { 
+      display: grid; 
+      gap: 12px; 
+    }
+
+    label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
 
     input[type="text"], input[type="email"] {
       width: 100%;
@@ -124,14 +137,56 @@
     }
 
     .cn-wrapper { min-height: 320px; }
+
+    /* 📱 Mobile responsiveness */
+    @media (max-width: 600px) {
+      .hero-header {
+        padding: 32px 16px 24px;
+      }
+
+      .hero-logo {
+        width: 260px;
+      }
+
+      .tagline {
+        font-size: 1.3rem;
+        margin-top: 10px;
+      }
+
+      main {
+        margin: 20px auto;
+        padding: 0 16px;
+      }
+
+      .card {
+        padding: 18px 16px;
+        border-radius: 12px;
+      }
+
+      h2 {
+        font-size: 1.3rem;
+      }
+
+      p {
+        font-size: 0.95rem;
+      }
+
+      button {
+        width: 100%;
+      }
+
+      .lock-overlay {
+        padding: 16px;
+        font-size: 0.9rem;
+      }
+    }
   </style>
 </head>
 
 <body>
 
 <header class="hero-header">
-
-  <!-- Correct logo reference -->
+  <!-- Make sure this filename matches exactly what’s in your repo -->
   <img src="Scratch 'N' Eat Logo Design.png"
        alt="Scratch 'N' Eat Logo"
        class="hero-logo">
@@ -146,10 +201,10 @@
     <p>Enter your details below to unlock your scratch card.</p>
 
     <form id="signup-form" novalidate>
-      <label>Name *</label>
+      <label for="name">Name *</label>
       <input type="text" id="name" required />
 
-      <label>Email *</label>
+      <label for="email">Email *</label>
       <input type="email" id="email" required />
 
       <button type="submit">Start Scratching</button>
