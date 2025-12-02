@@ -10,7 +10,7 @@
 
   <style>
     :root {
-      /* Exact red from your logo */
+      /* EXACT RED FROM YOUR LOGO */
       --red: #EE2E1E;
       --cream: #fff7e6;
       --dark: #222;
@@ -23,20 +23,19 @@
       font-family: system-ui, sans-serif;
       background: var(--cream);
       color: var(--dark);
-      overflow-x: hidden; /* stop sideways scroll */
     }
 
-    /* Hero header */
+    /* HEADER */
     .hero-header {
       background: var(--red);
       color: var(--cream);
-      padding: 60px 20px 40px;
+      padding: 50px 20px 40px;
       text-align: center;
     }
 
     .hero-logo {
-      width: 340px;
-      max-width: 90%;
+      width: 280px;
+      max-width: 85%;
       display: block;
       margin: 0 auto;
       opacity: 0;
@@ -44,12 +43,12 @@
     }
 
     .tagline {
-      font-size: 1.6rem;
+      font-size: 1.4rem;
       font-weight: 700;
-      color: var(--cream);
       margin-top: 15px;
       opacity: 0;
       animation: fadeIn 1.6s ease forwards 0.3s;
+      color: var(--cream);
     }
 
     @keyframes fadeIn {
@@ -59,8 +58,8 @@
 
     main {
       max-width: 700px;
-      margin: 30px auto;
-      padding: 0 20px;
+      margin: 20px auto;
+      padding: 0 16px;
     }
 
     .card {
@@ -72,38 +71,26 @@
       position: relative;
     }
 
-    h2 { margin-top: 0; }
+    form { display: grid; gap: 12px; }
 
-    form { 
-      display: grid; 
-      gap: 12px; 
-    }
-
-    label {
-      font-size: 0.9rem;
-      font-weight: 600;
-      margin-bottom: 2px;
-    }
-
-    select,
-    input[type="text"],
-    input[type="email"] {
+    input[type="text"], input[type="email"] {
       width: 100%;
-      padding: 10px 12px;
+      padding: 12px 14px;
       border-radius: 10px;
       border: 1px solid #ccc;
-      font-size: 0.95rem;
+      font-size: 1rem;
     }
 
     button {
-      padding: 12px 18px;
+      padding: 14px 18px;
       border-radius: 999px;
       border: none;
       background: var(--red);
       color: var(--cream);
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 1.05rem;
       cursor: pointer;
+      width: 100%;
     }
 
     button:hover { opacity: 0.9; }
@@ -111,7 +98,7 @@
     .hidden { display: none !important; }
 
     .success-message {
-      font-size: 0.95rem;
+      font-size: 1rem;
       margin-bottom: 6px;
       color: #0b7a34;
       font-weight: 600;
@@ -120,14 +107,15 @@
     footer {
       text-align: center;
       padding: 20px;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       color: #777;
     }
 
+    /* Prevent scratching before login */
     .lock-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(255,247,230,0.95);
+      background: rgba(255,247,230,0.98);
       border-radius: 16px;
       display: flex;
       align-items: center;
@@ -135,72 +123,30 @@
       padding: 20px;
       z-index: 10;
       text-align: center;
-    }
-
-    .selection-summary {
+      font-size: 1.1rem;
       font-weight: 600;
-      margin-bottom: 8px;
     }
 
-    /* 🔧 Keep the widget centred and inside the screen */
+    /* Center widget on mobile */
     .cn-wrapper {
-      min-height: 320px;
-      max-width: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       overflow: hidden;
-      margin: 0 auto;
     }
 
     .commonninja_component {
-      max-width: 100%;
+      width: 100% !important;
+      max-width: 500px;
       margin: 0 auto;
     }
 
-    /* When locked, ignore all taps/clicks */
-    #scratch-container.locked {
-      pointer-events: none;
+    /* Fix for mobile spacing inside widget */
+    .commonninja_component * {
+      max-width: 100% !important;
     }
 
-    @media (max-width: 600px) {
-      .hero-header {
-        padding: 32px 16px 24px;
-      }
-
-      .hero-logo {
-        width: 260px;
-      }
-
-      .tagline {
-        font-size: 1.3rem;
-        margin-top: 10px;
-      }
-
-      main {
-        margin: 20px auto;
-        padding: 0 16px;
-      }
-
-      .card {
-        padding: 18px 16px;
-        border-radius: 12px;
-      }
-
-      h2 {
-        font-size: 1.3rem;
-      }
-
-      p {
-        font-size: 0.95rem;
-      }
-
-      button {
-        width: 100%;
-      }
-
-      .lock-overlay {
-        padding: 16px;
-        font-size: 0.9rem;
-      }
-    }
   </style>
 </head>
 
@@ -210,77 +156,47 @@
   <img src="Scratch 'N' Eat Logo Design.png"
        alt="Scratch 'N' Eat Logo"
        class="hero-logo">
+
   <p class="tagline">Scratch. Win. Eat.</p>
 </header>
 
 <main>
 
-  <!-- STEP 1: Choose town / cuisine / business (for now: Star Of Bengal) -->
-  <section class="card" id="step1-section">
-    <h2>Find your takeaway</h2>
-    <p>
-      Choose your town and type of food, then pick a business to play for.<br>
-      On the next page you’ll see their scratch card.
-    </p>
+  <!-- SIGN UP FORM -->
+  <section class="card" id="signup-section">
+    <h2>Sign up or sign in to play.</h2>
 
-    <form id="choose-business-form" novalidate>
-      <label for="town">Town *</label>
-      <select id="town" required>
-        <option value="">Select your town</option>
-        <option value="Bangor" selected>Bangor</option>
-      </select>
+    <form id="signup-form" novalidate>
+      <label>Name *</label>
+      <input type="text" id="name" required />
 
-      <label for="cuisine">Cuisine *</label>
-      <select id="cuisine" required>
-        <option value="">Select cuisine</option>
-        <option value="Indian" selected>Indian</option>
-      </select>
+      <label>Email *</label>
+      <input type="email" id="email" required />
 
-      <label for="business">Business *</label>
-      <select id="business" required>
-        <option value="Star Of Bengal" selected>Star Of Bengal</option>
-      </select>
-
-      <button type="submit">Continue</button>
+      <button type="submit">Unlock Scratch Card</button>
     </form>
   </section>
 
-  <!-- STEP 2: Business-specific scratch card with sign up/in -->
-  <section class="card hidden" id="step2-section">
-    <h2 id="business-heading">Scratch &amp; Win – Star Of Bengal</h2>
-    <p id="business-summary" class="selection-summary">
-      Bangor • Indian • Star Of Bengal
-    </p>
+  <!-- SCRATCH CARD -->
+  <section class="card" id="widget-section">
 
-    <div id="signup-card">
-      <p><strong>Sign up or sign in to play.</strong></p>
-      <form id="signup-form" novalidate>
-        <label for="name">Name *</label>
-        <input type="text" id="name" required />
-
-        <label for="email">Email *</label>
-        <input type="email" id="email" required />
-
-        <button type="submit">Unlock Scratch Card</button>
-      </form>
+    <div id="widget-overlay" class="lock-overlay">
+      Please sign up or sign in above to play this scratch card.
     </div>
 
-    <section class="card" style="margin-top: 16px; position:relative;">
-      <div id="widget-overlay" class="lock-overlay">
-        <p>Please sign up or sign in above to play this scratch card.</p>
-      </div>
+    <div id="success-message" class="success-message" style="display:none;">
+      You're in! Your scratch card is ready. 🍀
+    </div>
 
-      <div id="success-message" class="success-message" style="display:none;">
-        You're in! Your scratch card is ready.
-      </div>
+    <h2>Scratch &amp; Win</h2>
+    <p>Reveal your prize below:</p>
 
-      <h3>Scratch &amp; Win</h3>
-      <p>Reveal your prize below:</p>
+    <div class="cn-wrapper">
 
-      <div class="cn-wrapper" id="scratch-container">
-        <div class="commonninja_component pid-a681398a-7a0d-4da8-90d1-598d4137f6f5"></div>
-      </div>
-    </section>
+      <!-- NEW Common Ninja widget -->
+      <div class="commonninja_component pid-a681398a-7a0d-4da8-90d1-598d4137f6f5"></div>
+
+    </div>
   </section>
 
 </main>
@@ -292,48 +208,13 @@
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
 
-  const step1Section = document.getElementById("step1-section");
-  const step2Section = document.getElementById("step2-section");
-  const chooseBusinessForm = document.getElementById("choose-business-form");
-  const signupForm = document.getElementById("signup-form");
-
-  const townSelect = document.getElementById("town");
-  const cuisineSelect = document.getElementById("cuisine");
-  const businessSelect = document.getElementById("business");
-  const businessHeading = document.getElementById("business-heading");
-  const businessSummary = document.getElementById("business-summary");
-
+  const form = document.getElementById("signup-form");
   const overlay = document.getElementById("widget-overlay");
   const successMessage = document.getElementById("success-message");
-  const signupCard = document.getElementById("signup-card");
-  const scratchContainer = document.getElementById("scratch-container");
+  const signupSection = document.getElementById("signup-section");
+  const widgetSection = document.getElementById("widget-section");
 
-  // lock clicks on the widget until signup
-  scratchContainer.classList.add("locked");
-
-  // STEP 1: For now everything is fixed to Star Of Bengal, but we keep logic tidy
-  chooseBusinessForm.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    const town = townSelect.value.trim();
-    const cuisine = cuisineSelect.value.trim();
-    const business = businessSelect.value.trim();
-
-    if (!town || !cuisine || !business) {
-      alert("Please select your town, cuisine, and a business.");
-      return;
-    }
-
-    businessHeading.textContent = "Scratch & Win – " + business;
-    businessSummary.textContent = town + " • " + cuisine + " • " + business;
-
-    step1Section.classList.add("hidden");
-    step2Section.classList.remove("hidden");
-    step2Section.scrollIntoView({ behavior: "smooth" });
-  });
-
-  // STEP 2: Sign up → unlock scratch card
-  signupForm.addEventListener("submit", function (e) {
+  form.addEventListener("submit", function (e) {
     e.preventDefault();
 
     const name = document.getElementById("name").value.trim();
@@ -350,36 +231,10 @@
       return;
     }
 
-    // Once-per-week limit per email
-    const key = "sne_last_play_" + email.toLowerCase();
-    const lastPlay = localStorage.getItem(key);
-    const now = Date.now();
-    const oneWeekMs = 7 * 24 * 60 * 60 * 1000;
-
-    if (lastPlay) {
-      const lastTime = parseInt(lastPlay, 10);
-      const diff = now - lastTime;
-      if (diff < oneWeekMs) {
-        const daysLeft = Math.ceil((oneWeekMs - diff) / (1000 * 60 * 60 * 24));
-        const lastDate = new Date(lastTime).toLocaleDateString();
-        alert(
-          "You already played this week.\n\n" +
-          "Last play: " + lastDate + "\n" +
-          "You can play again in about " + daysLeft + " day(s)."
-        );
-        return;
-      }
-    }
-
-    localStorage.setItem(key, String(now));
-
-    // Unlock the widget
-    signupCard.classList.add("hidden");
+    signupSection.classList.add("hidden");
     overlay.style.display = "none";
     successMessage.style.display = "block";
-    scratchContainer.classList.remove("locked");
-
-    step2Section.scrollIntoView({ behavior: "smooth" });
+    widgetSection.scrollIntoView({ behavior: "smooth" });
   });
 </script>
 
