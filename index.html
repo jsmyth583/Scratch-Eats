@@ -172,8 +172,11 @@
 
 <body>
 
-<!-- 🔊 AUDIO ADDED HERE -->
-<audio id="scratch-sound" src="scratch-sound.mp3" preload="auto"></audio>
+<!-- 🔊 AUDIO: visible controls so you can test -->
+<div style="text-align:center; padding:8px 0; font-size:0.85rem;">
+  <p style="margin:4px 0;">Test scratch sound:</p>
+  <audio id="scratch-sound" src="scratch-sound.mp3" preload="auto" controls></audio>
+</div>
 
 <header class="hero-header">
   <img src="Scratch 'N' Eat Logo Design.png"
@@ -364,7 +367,7 @@
 
     localStorage.setItem(key, now.toString());
 
-    /* 🔊 AUDIO ADDED HERE — PLAY SCRATCH SOUND */
+    // 🔊 Play scratch sound on unlock
     const audio = document.getElementById("scratch-sound");
     if (audio) {
       audio.currentTime = 0;
