@@ -9,222 +9,197 @@
   <script src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
 
   <style>
-    :root {
-      /* EXACT RED TAKEN FROM YOUR LOGO */
-      --red: #EE2E1E;
-      --cream: #fff7e6;
-      --dark: #222;
+    :root{
+      /* Match the logo background */
+      --red:#EE2E1E;
+      --cream:#fff7e6;
+      --dark:#222;
+      --card:#ffffff;
+      --shadow:0 8px 22px rgba(0,0,0,.08);
     }
 
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: system-ui, sans-serif;
-      background: var(--cream);
-      color: var(--dark);
+    *{box-sizing:border-box}
+    html,body{margin:0}
+    body{
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
+      background:var(--cream);
+      color:var(--dark);
+      line-height:1.45;
     }
 
-    /* Hero header */
-    .hero-header {
-      background: var(--red);
-      color: var(--cream);
-      padding: 40px 16px 32px;
-      text-align: center;
+    /* Hero */
+    .hero-header{
+      background:var(--red);
+      color:var(--cream);
+      padding:56px 20px 36px;
+      text-align:center;
+    }
+    .hero-logo{
+      width:340px;
+      max-width:88%;
+      display:block;
+      margin:0 auto 12px;
+      opacity:0;
+      animation:fadeIn 1.1s ease forwards;
+    }
+    .tagline{
+      margin:8px 0 0;
+      font-weight:700;
+      font-size:1.25rem;
+      opacity:0;
+      animation:fadeIn .9s ease .15s forwards;
+    }
+    @keyframes fadeIn{
+      from{opacity:0;transform:translateY(8px)}
+      to{opacity:1;transform:translateY(0)}
     }
 
-    .hero-logo {
-      width: clamp(220px, 55vw, 360px);
-      max-width: 100%;
-      display: block;
-      margin: 0 auto;
-      opacity: 0;
-      animation: fadeIn 1.4s ease forwards;
+    /* Layout */
+    main{max-width:780px;margin:26px auto;padding:0 16px}
+    .card{
+      background:var(--card);
+      border-radius:18px;
+      padding:22px 18px;
+      box-shadow:var(--shadow);
+      margin:0 auto 22px;
+    }
+    .card h2{margin:0 0 8px}
+    .card p.lead{margin-top:4px;color:#555}
+
+    label{font-weight:600;margin:10px 0 6px;display:block}
+    select,input{
+      width:100%;
+      height:48px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid #d9d9d9;
+      font-size:1rem;
+      background:#fff;
+    }
+    button{
+      height:52px;
+      padding:0 18px;
+      border-radius:999px;
+      border:none;
+      background:var(--red);
+      color:#fff;
+      font-weight:800;
+      font-size:1rem;
+      cursor:pointer;
+      margin-top:12px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:100%;
+    }
+    button:hover{opacity:.95}
+
+    .hidden{display:none !important}
+
+    /* Scratch widget area */
+    #widget-section .cn-wrapper{
+      position:relative;
+      min-height:340px;
+      overflow:hidden; /* prevent any edge peeking */
+    }
+    /* Center the embedded widget */
+    .commonninja_component{
+      display:block;
+      margin:0 auto;
+      max-width:640px;
+      width:100%;
     }
 
-    .tagline {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: var(--cream);
-      margin-top: 12px;
-      opacity: 0;
-      animation: fadeIn 1.6s ease forwards 0.3s;
+    /* Lock overlay to stop any scratching before signup */
+    .lock-overlay{
+      position:absolute;
+      inset:0;
+      border-radius:16px;
+      background:rgba(255,247,230,.96);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:20px;
+      z-index:10;
+    }
+    .lock-overlay p{margin:0;font-weight:700;color:#333}
+
+    .success-message{
+      color:#0b7a34;
+      font-weight:700;
+      margin:4px 0 12px;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
+    /* “Order here” or any call-to-action blocks you place under the widget */
+    .cta{
+      display:flex;justify-content:center
+    }
+    .cta a{
+      display:inline-block;
+      padding:14px 22px;
+      border-radius:12px;
+      text-decoration:none;
+      background:#1967ff;
+      color:#fff;
+      font-weight:800;
+      text-align:center;
     }
 
-    main {
-      max-width: 720px;
-      margin: 24px auto 32px;
-      padding: 0 16px 24px;
+    footer{
+      text-align:center;
+      padding:20px;
+      color:#777;
+      font-size:.9rem;
     }
 
-    .card {
-      background: #fff;
-      border-radius: 18px;
-      padding: 20px 18px;
-      box-shadow: 0 8px 22px rgba(0,0,0,0.08);
-      margin-bottom: 20px;
-      position: relative;
-    }
-
-    h2 {
-      margin-top: 0;
-      margin-bottom: 8px;
-      font-size: 1.5rem;
-    }
-
-    p {
-      margin-top: 0;
-      margin-bottom: 10px;
-    }
-
-    form {
-      display: grid;
-      gap: 10px;
-    }
-
-    label {
-      font-size: 0.95rem;
-      font-weight: 600;
-    }
-
-    input[type="text"],
-    input[type="email"],
-    select {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      font-size: 0.95rem;
-      background: #fff;
-    }
-
-    button {
-      padding: 12px 18px;
-      border-radius: 999px;
-      border: none;
-      background: var(--red);
-      color: var(--cream);
-      font-weight: 700;
-      font-size: 1rem;
-      cursor: pointer;
-      width: 100%;
-    }
-
-    button:hover {
-      opacity: 0.9;
-    }
-
-    .hidden { display: none !important; }
-
-    .success-message {
-      font-size: 0.95rem;
-      margin-bottom: 6px;
-      color: #0b7a34;
-      font-weight: 600;
-    }
-
-    footer {
-      text-align: center;
-      padding: 16px;
-      font-size: 0.8rem;
-      color: #777;
-    }
-
-    .lock-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(255,247,230,0.95);
-      border-radius: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      z-index: 10;
-      text-align: center;
-    }
-
-    .cn-wrapper {
-      min-height: 320px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .scratch-meta {
-      font-size: 0.9rem;
-      color: #666;
-      margin-bottom: 12px;
-    }
-
-    /* Mobile tweaks */
-    @media (max-width: 480px) {
-      .hero-header {
-        padding: 28px 12px 20px;
-      }
-      .tagline {
-        font-size: 1.2rem;
-      }
-      main {
-        margin-top: 16px;
-        padding: 0 10px 20px;
-      }
-      .card {
-        padding: 18px 14px;
-      }
+    /* Mobile polish */
+    @media (max-width:480px){
+      .hero-logo{width:300px}
+      .tagline{font-size:1.1rem}
+      .card{padding:18px 14px}
     }
   </style>
 </head>
-
 <body>
 
-  <!-- 🔊 Scratch sound (file must be in same folder as index.html) -->
-  <audio id="scratchSound" src="scratch-sound.wav" preload="auto"></audio>
-
   <header class="hero-header">
-    <!-- Logo -->
-    <img src="Scratch 'N' Eat Logo Design.png"
-         alt="Scratch 'N' Eat Logo"
-         class="hero-logo">
-
+    <img src="Scratch 'N' Eat Logo Design.png" alt="Scratch 'N' Eat Logo" class="hero-logo">
     <p class="tagline">Scratch. Win. Eat.</p>
   </header>
 
   <main>
 
-    <!-- FIND YOUR TAKEAWAY -->
+    <!-- STEP 1: FINDER -->
     <section class="card" id="finder-card">
       <h2>Find your takeaway</h2>
-      <p>Select your town, cuisine and business to play for their scratch card.</p>
+      <p class="lead">Select your town, cuisine and business to play for their scratch card.</p>
 
       <form id="finder-form">
         <label for="townSelect">Town *</label>
         <select id="townSelect" required>
           <option value="">Select your town</option>
-          <option value="Bangor" selected>Bangor</option>
+          <option value="Bangor">Bangor</option>
         </select>
 
         <label for="cuisineSelect">Cuisine *</label>
         <select id="cuisineSelect" required>
           <option value="">Select cuisine</option>
-          <option value="Indian" selected>Indian</option>
+          <option value="Indian">Indian</option>
         </select>
 
         <label for="businessSelect">Business *</label>
         <select id="businessSelect" required>
           <option value="">Select business</option>
-          <option value="Star Of Bengal" selected>Star Of Bengal</option>
+          <option value="Star Of Bengal">Star Of Bengal</option>
         </select>
+
+        <button type="button" id="continueBtn">Continue</button>
       </form>
     </section>
 
-    <!-- SIGN UP / SIGN IN -->
-    <section class="card" id="signup-section">
+    <!-- STEP 2: SIGN UP -->
+    <section class="card hidden" id="signup-section">
       <h2>Sign up or sign in to play.</h2>
       <p>Enter your details below to unlock your scratch card.</p>
 
@@ -239,7 +214,7 @@
       </form>
     </section>
 
-    <!-- SCRATCH WIDGET -->
+    <!-- STEP 3: SCRATCH WIDGET -->
     <section class="card" id="widget-section">
       <div id="widget-overlay" class="lock-overlay">
         <p>Please sign up or sign in above to play this scratch card.</p>
@@ -250,15 +225,21 @@
       </div>
 
       <h2 id="scratch-title">Scratch &amp; Win – Star Of Bengal</h2>
-      <p id="scratch-meta" class="scratch-meta">
-        Bangor • Indian • Star Of Bengal
-      </p>
+      <p id="scratch-meta" class="lead">Bangor • Indian • Star Of Bengal</p>
 
       <p>Reveal your prize below:</p>
 
       <div class="cn-wrapper" id="scratch-area">
+        <!-- Your Common Ninja component -->
         <div class="commonninja_component pid-a681398a-7a0d-4da8-90d1-598d4137f6f5"></div>
       </div>
+
+      <!-- Example CTA under widget (centered) -->
+      <!--
+      <div class="cta" style="margin-top:16px;">
+        <a href="https://starofbengalbangor.co.uk" target="_blank" rel="noopener">Order here</a>
+      </div>
+      -->
     </section>
 
   </main>
@@ -267,92 +248,46 @@
     © <span id="year"></span> Scratch 'N' Eat. All rights reserved.
   </footer>
 
+  <!-- Scratch sound (place your file here: /assets/scratch-sound.mp3) -->
+  <audio id="scratchSound" src="assets/scratch-sound.mp3" preload="auto"></audio>
+
   <script>
+    // Footer year
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    const form = document.getElementById("signup-form");
-    const overlay = document.getElementById("widget-overlay");
-    const successMessage = document.getElementById("success-message");
-    const signupSection = document.getElementById("signup-section");
-    const widgetSection = document.getElementById("widget-section");
-    const scratchArea = document.getElementById("scratch-area");
-    const scratchSound = document.getElementById("scratchSound");
-
+    // Elements
+    const finderCard = document.getElementById("finder-card");
+    const continueBtn = document.getElementById("continueBtn");
     const townSelect = document.getElementById("townSelect");
     const cuisineSelect = document.getElementById("cuisineSelect");
     const businessSelect = document.getElementById("businessSelect");
+
+    const signupSection = document.getElementById("signup-section");
+    const signupForm = document.getElementById("signup-form");
+
+    const widgetSection = document.getElementById("widget-section");
+    const overlay = document.getElementById("widget-overlay");
+    const successMessage = document.getElementById("success-message");
     const scratchTitle = document.getElementById("scratch-title");
     const scratchMeta = document.getElementById("scratch-meta");
+    const scratchArea = document.getElementById("scratch-area");
+    const scratchSound = document.getElementById("scratchSound");
 
-    function updateScratchHeader() {
-      const town = townSelect.value || "Your town";
-      const cuisine = cuisineSelect.value || "Cuisine";
-      const business = businessSelect.value || "Your takeaway";
-
+    // Update the widget header with chosen place/cuisine/business
+    function updateScratchHeader(){
+      const town = townSelect.value || "—";
+      const cuisine = cuisineSelect.value || "—";
+      const business = businessSelect.value || "—";
       scratchTitle.textContent = `Scratch & Win – ${business}`;
       scratchMeta.textContent = `${town} • ${cuisine} • ${business}`;
     }
 
-    townSelect.addEventListener("change", updateScratchHeader);
-    cuisineSelect.addEventListener("change", updateScratchHeader);
-    businessSelect.addEventListener("change", updateScratchHeader);
-
-    updateScratchHeader(); // initial
-
-    function playScratchEffect() {
-      if (scratchSound) {
-        try {
-          scratchSound.currentTime = 0;
-          scratchSound.play();
-        } catch (e) {
-          console.log("Sound play blocked until user interacts.", e);
-        }
-      }
-      if (navigator.vibrate) {
-        navigator.vibrate(40);
-      }
-    }
-
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
-
-      if (!name || !email) {
-        alert("Please enter both your name and email.");
+    // Step 1 -> Step 2
+    continueBtn.addEventListener("click", () => {
+      if(!townSelect.value || !cuisineSelect.value || !businessSelect.value){
+        alert("Please select town, cuisine and business first.");
         return;
       }
-
-      const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-      if (!valid) {
-        alert("Please enter a valid email.");
-        return;
-      }
-
-      signupSection.classList.add("hidden");
-      overlay.style.display = "none";
-      successMessage.style.display = "block";
-      widgetSection.scrollIntoView({ behavior: "smooth" });
-
-      // Prime effect on unlock so audio is allowed
-      playScratchEffect();
-    });
-
-    // Play sound + vibrate on first touch/click inside scratch area
-    if (scratchArea) {
-      const triggerOnce = () => {
-        playScratchEffect();
-        scratchArea.removeEventListener("pointerdown", triggerOnce);
-        scratchArea.removeEventListener("touchstart", triggerOnce);
-        scratchArea.removeEventListener("mousedown", triggerOnce);
-      };
-
-      scratchArea.addEventListener("pointerdown", triggerOnce, { passive: true });
-      scratchArea.addEventListener("touchstart", triggerOnce, { passive: true });
-      scratchArea.addEventListener("mousedown", triggerOnce);
-    }
-  </script>
-
-</body>
-</html>
+      updateScratchHeader();
+      finderCard.classList.add("hidden");
+      signupSection.classList.remove("hidden");
