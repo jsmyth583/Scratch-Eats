@@ -262,7 +262,6 @@
         </select>
       </div>
 
-      <!-- This button just checks the selection and then reveals the sign-up card -->
       <button type="submit">Continue</button>
     </form>
   </section>
@@ -300,7 +299,7 @@
 
     <h2>Scratch &amp; Win – <span id="widget-business-name">Star Of Bengal</span></h2>
 
-    <!-- ⭐ Star Of Bengal logo shown for both scratch + prize screens -->
+    <!-- Star Of Bengal logo -->
     <img src="starofbengal.png"
          alt="Star Of Bengal Logo"
          class="biz-logo">
@@ -320,22 +319,24 @@
 </footer>
 
 <script>
-  // Year in footer
   document.getElementById("year").textContent = new Date().getFullYear();
 
-  const selectorForm     = document.getElementById("selector-form");
-  const townSelect       = document.getElementById("town");
-  const cuisineSelect    = document.getElementById("cuisine");
-  const businessSelect   = document.getElementById("business");
-  const signupSection    = document.getElementById("signup-section");
-  const widgetSection    = document.getElementById("widget-section");
-  const restaurantLabel  = document.getElementById("restaurant-label");
-  const widgetBizName    = document.getElementById("widget-business-name");
-  const signupForm       = document.getElementById("signup-form");
-  const overlay          = document.getElementById("widget-overlay");
-  const successMessage   = document.getElementById("success-message");
+  const selectorForm   = document.getElementById("selector-form");
+  const townSelect     = document.getElementById("town");
+  const cuisineSelect  = document.getElementById("cuisine");
+  const businessSelect = document.getElementById("business");
+  const signupSection  = document.getElementById("signup-section");
+  const widgetSection  = document.getElementById("widget-section");
+  const restaurantLabel= document.getElementById("restaurant-label");
+  const widgetBizName  = document.getElementById("widget-business-name");
+  const signupForm     = document.getElementById("signup-form");
+  const overlay        = document.getElementById("widget-overlay");
+  const successMessage = document.getElementById("success-message");
 
-  // STEP 1 → STEP 2: handle takeaway selection
+  // 🔗 YOUR GOOGLE APPS SCRIPT WEB APP URL
+  const BACKEND_URL = "https://script.google.com/macros/s/AKfycbyyiOIWqK1Hj7mJModtWgrXr3LyyUpTp0y9MYJJ9hcfBGHuaXAxHL8bd0uubl36uVz1/exec";
+
+  // STEP 1 → STEP 2
   selectorForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
@@ -352,45 +353,58 @@
     restaurantLabel.textContent = labelText;
     widgetBizName.textContent   = biz;
 
-    // Show signup card
     signupSection.classList.remove("hidden");
     signupSection.scrollIntoView({ behavior: "smooth" });
   });
 
-  // STEP 2 → STEP 3: handle sign-up
-  signupForm.addEventListener("submit", function (e) {
+  // STEP 2 → STEP 3 (with backend save)
+  signupForm.addEventListener("submit", async function (e) {
     e.preventDefault();
 
     const name  = document.getElementById("name").value.trim();
     const email = document.getElementById("email").value.trim();
+    const town    = townSelect.value.trim();
+    const cuisine = cuisineSelect.value.trim();
+    const business= businessSelect.value.trim();
 
     if (!name || !email) {
       alert("Please enter both your name and email.");
       return;
     }
 
-    const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    if (!valid) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       alert("Please enter a valid email address.");
       return;
     }
 
-    // Hide signup card
+    // Send data to Google Sheets backend
+    try {
+      const res = await fetch(BACKEND_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, town, cuisine, business })
+      });
+
+      const result = await res.json();
+      if (!result.ok) {
+        console.error(result);
+        alert("There was a problem saving your play. Please try again.");
+        return;
+      }
+
+      // Later we can use result.allowed to block replays
+    } catch (err) {
+      console.error(err);
+      alert("Network error. Please try again.");
+      return;
+    }
+
+    // If saved OK → show scratch card
     signupSection.classList.add("hidden");
-
-    // Show scratch card section
     widgetSection.classList.remove("hidden");
-
-    // Remove overlay so the card is playable
     overlay.style.display = "none";
-
-    // Show confirmation message
     successMessage.style.display = "block";
-
-    // Scroll user to scratch card
     widgetSection.scrollIntoView({ behavior: "smooth" });
-
-    // TODO later: send name/email to Google Sheets here
   });
 </script>
 
