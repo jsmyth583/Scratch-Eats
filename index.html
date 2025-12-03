@@ -157,33 +157,23 @@
       margin: 0 auto;
     }
 
-    /* Prevent clicks before signup just in case */
     #scratch-container.locked {
       pointer-events: none;
     }
 
-    /* Mobile tweaks */
     @media (max-width: 600px) {
-      .hero-header {
-        padding: 32px 16px 24px;
-      }
-
-      .hero-logo {
-        width: 240px;
-      }
-
-      .tagline {
-        font-size: 1.2rem;
-      }
-
-      .card {
-        padding: 18px 16px;
-      }
+      .hero-header { padding: 32px 16px 24px; }
+      .hero-logo { width: 240px; }
+      .tagline { font-size: 1.2rem; }
+      .card { padding: 18px 16px; }
     }
   </style>
 </head>
 
 <body>
+
+<!-- 🔊 AUDIO ADDED HERE -->
+<audio id="scratch-sound" src="scratch-sound.mp3" preload="auto"></audio>
 
 <header class="hero-header">
   <img src="Scratch 'N' Eat Logo Design.png"
@@ -195,7 +185,7 @@
 
 <main>
 
-  <!-- STEP 1: Town / Cuisine / Business -->
+  <!-- STEP 1 -->
   <section class="card" id="step1-section">
     <h2>Find your takeaway</h2>
     <p>Select your town, cuisine and business to play for their scratch card.</p>
@@ -232,7 +222,7 @@
     </form>
   </section>
 
-  <!-- STEP 2: Signup + Scratch Card -->
+  <!-- STEP 2 -->
   <section class="card hidden" id="step2-section">
     <h2 id="business-heading">Scratch &amp; Win</h2>
     <p id="business-summary" class="selection-summary"></p>
@@ -264,7 +254,6 @@
       <p>Reveal your prize below:</p>
 
       <div class="cn-wrapper" id="scratch-container">
-        <!-- NEW Common Ninja widget code -->
         <script src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
         <div class="commonninja_component pid-a681398a-7a0d-4da8-90d1-598d4137f6f5"></div>
       </div>
@@ -288,6 +277,7 @@
   const townSelect = document.getElementById("town");
   const cuisineSelect = document.getElementById("cuisine");
   const businessSelect = document.getElementById("business");
+
   const businessHeading = document.getElementById("business-heading");
   const businessSummary = document.getElementById("business-summary");
 
@@ -296,24 +286,13 @@
   const signupCard = document.getElementById("signup-card");
   const scratchContainer = document.getElementById("scratch-container");
 
-  // Lock clicks on widget until signup
+  // Lock widget
   scratchContainer.classList.add("locked");
 
-  // Simple business data – extend this as you sign more up
   const BUSINESS_DATA = {
     "Bangor": {
-      "Indian": ["Star Of Bengal"],
-      "Pizza": [],
-      "Chinese": [],
-      "Kebab": [],
-      "Fish & Chips": [],
-      "Burgers": [],
-      "Desserts": [],
-      "Other": []
-    },
-    "Newtownards": {},
-    "Holywood": {},
-    "Belfast": {}
+      "Indian": ["Star Of Bengal"]
+    }
   };
 
   function populateBusinesses() {
@@ -324,33 +303,22 @@
     businessSelect.disabled = true;
 
     if (!town || !cuisine) {
-      const opt = document.createElement("option");
-      opt.value = "";
-      opt.textContent = "Select a town & cuisine first";
-      businessSelect.appendChild(opt);
+      businessSelect.innerHTML = "<option>Select a town & cuisine first</option>";
       return;
     }
 
-    const townData = BUSINESS_DATA[town] || {};
-    const list = townData[cuisine] || [];
+    const list = BUSINESS_DATA[town]?.[cuisine] || [];
 
     if (!list.length) {
-      const opt = document.createElement("option");
-      opt.value = "";
-      opt.textContent = "No businesses listed yet for this selection";
-      businessSelect.appendChild(opt);
+      businessSelect.innerHTML = "<option>No businesses listed yet</option>";
       return;
     }
 
-    const placeholder = document.createElement("option");
-    placeholder.value = "";
-    placeholder.textContent = "Select a business";
-    businessSelect.appendChild(placeholder);
-
-    list.forEach(name => {
+    businessSelect.innerHTML = "<option value=''>Select a business</option>";
+    list.forEach(b => {
       const opt = document.createElement("option");
-      opt.value = name;
-      opt.textContent = name;
+      opt.value = b;
+      opt.textContent = b;
       businessSelect.appendChild(opt);
     });
 
@@ -360,75 +328,55 @@
   townSelect.addEventListener("change", populateBusinesses);
   cuisineSelect.addEventListener("change", populateBusinesses);
 
-  // STEP 1 submit
-  chooseBusinessForm.addEventListener("submit", function (e) {
+  chooseBusinessForm.addEventListener("submit", e => {
     e.preventDefault();
 
-    const town = townSelect.value.trim();
-    const cuisine = cuisineSelect.value.trim();
-    const business = businessSelect.value.trim();
-
-    if (!town || !cuisine || !business) {
-      alert("Please select your town, cuisine, and business.");
-      return;
+    if (!townSelect.value || !cuisineSelect.value || !businessSelect.value) {
+      return alert("Please complete all fields.");
     }
 
-    businessHeading.textContent = "Scratch & Win – " + business;
-    businessSummary.textContent = town + " • " + cuisine + " • " + business;
+    businessHeading.textContent = "Scratch & Win – " + businessSelect.value;
+    businessSummary.textContent =
+      townSelect.value + " • " + cuisineSelect.value + " • " + businessSelect.value;
 
     step1Section.classList.add("hidden");
     step2Section.classList.remove("hidden");
-    step2Section.scrollIntoView({ behavior: "smooth" });
   });
 
-  // STEP 2 – signup to unlock scratch card (once per week per email)
-  signupForm.addEventListener("submit", function (e) {
+  signupForm.addEventListener("submit", e => {
     e.preventDefault();
 
     const name = document.getElementById("name").value.trim();
     const email = document.getElementById("email").value.trim();
 
-    if (!name || !email) {
-      alert("Please enter both your name and email.");
-      return;
-    }
+    if (!name || !email) return alert("Fill all fields.");
 
-    const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    if (!valid) {
-      alert("Please enter a valid email.");
-      return;
-    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+      return alert("Enter a valid email.");
 
     const key = "sne_last_play_" + email.toLowerCase();
-    const lastPlay = localStorage.getItem(key);
     const now = Date.now();
-    const oneWeekMs = 7 * 24 * 60 * 60 * 1000;
+    const last = localStorage.getItem(key);
 
-    if (lastPlay) {
-      const lastTime = parseInt(lastPlay, 10);
-      const diff = now - lastTime;
-      if (diff < oneWeekMs) {
-        const daysLeft = Math.ceil((oneWeekMs - diff) / (1000 * 60 * 60 * 24));
-        const lastDate = new Date(lastTime).toLocaleDateString();
-        alert(
-          "You already played this week.\n\n" +
-          "Last play: " + lastDate + "\n" +
-          "You can play again in about " + daysLeft + " day(s)."
-        );
-        return;
-      }
+    if (last && now - last < 7*24*60*60*1000) {
+      return alert("You already played this week.");
     }
 
-    localStorage.setItem(key, String(now));
+    localStorage.setItem(key, now.toString());
+
+    /* 🔊 AUDIO ADDED HERE — PLAY SCRATCH SOUND */
+    const audio = document.getElementById("scratch-sound");
+    if (audio) {
+      audio.currentTime = 0;
+      audio.play().catch(() => {});
+    }
 
     signupCard.classList.add("hidden");
     overlay.style.display = "none";
     successMessage.style.display = "block";
     scratchContainer.classList.remove("locked");
-    step2Section.scrollIntoView({ behavior: "smooth" });
   });
 </script>
 
 </body>
 </html>
-
