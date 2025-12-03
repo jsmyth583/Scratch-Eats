@@ -93,12 +93,14 @@
     }
 
     input[type="text"],
-    input[type="email"] {
+    input[type="email"],
+    select {
       width: 100%;
       padding: 10px 12px;
       border-radius: 10px;
       border: 1px solid #ccc;
       font-size: 0.95rem;
+      background: #fff;
     }
 
     button {
@@ -154,6 +156,12 @@
       overflow: hidden;
     }
 
+    .scratch-meta {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 12px;
+    }
+
     /* Mobile tweaks */
     @media (max-width: 480px) {
       .hero-header {
@@ -189,6 +197,33 @@
 
   <main>
 
+    <!-- FIND YOUR TAKEAWAY -->
+    <section class="card" id="finder-card">
+      <h2>Find your takeaway</h2>
+      <p>Select your town, cuisine and business to play for their scratch card.</p>
+
+      <form id="finder-form">
+        <label for="townSelect">Town *</label>
+        <select id="townSelect" required>
+          <option value="">Select your town</option>
+          <option value="Bangor" selected>Bangor</option>
+        </select>
+
+        <label for="cuisineSelect">Cuisine *</label>
+        <select id="cuisineSelect" required>
+          <option value="">Select cuisine</option>
+          <option value="Indian" selected>Indian</option>
+        </select>
+
+        <label for="businessSelect">Business *</label>
+        <select id="businessSelect" required>
+          <option value="">Select business</option>
+          <option value="Star Of Bengal" selected>Star Of Bengal</option>
+        </select>
+      </form>
+    </section>
+
+    <!-- SIGN UP / SIGN IN -->
     <section class="card" id="signup-section">
       <h2>Sign up or sign in to play.</h2>
       <p>Enter your details below to unlock your scratch card.</p>
@@ -204,6 +239,7 @@
       </form>
     </section>
 
+    <!-- SCRATCH WIDGET -->
     <section class="card" id="widget-section">
       <div id="widget-overlay" class="lock-overlay">
         <p>Please sign up or sign in above to play this scratch card.</p>
@@ -213,7 +249,11 @@
         You're in! Your scratch card is ready.
       </div>
 
-      <h2>Scratch &amp; Win</h2>
+      <h2 id="scratch-title">Scratch &amp; Win – Star Of Bengal</h2>
+      <p id="scratch-meta" class="scratch-meta">
+        Bangor • Indian • Star Of Bengal
+      </p>
+
       <p>Reveal your prize below:</p>
 
       <div class="cn-wrapper" id="scratch-area">
@@ -237,6 +277,27 @@
     const widgetSection = document.getElementById("widget-section");
     const scratchArea = document.getElementById("scratch-area");
     const scratchSound = document.getElementById("scratchSound");
+
+    const townSelect = document.getElementById("townSelect");
+    const cuisineSelect = document.getElementById("cuisineSelect");
+    const businessSelect = document.getElementById("businessSelect");
+    const scratchTitle = document.getElementById("scratch-title");
+    const scratchMeta = document.getElementById("scratch-meta");
+
+    function updateScratchHeader() {
+      const town = townSelect.value || "Your town";
+      const cuisine = cuisineSelect.value || "Cuisine";
+      const business = businessSelect.value || "Your takeaway";
+
+      scratchTitle.textContent = `Scratch & Win – ${business}`;
+      scratchMeta.textContent = `${town} • ${cuisine} • ${business}`;
+    }
+
+    townSelect.addEventListener("change", updateScratchHeader);
+    cuisineSelect.addEventListener("change", updateScratchHeader);
+    businessSelect.addEventListener("change", updateScratchHeader);
+
+    updateScratchHeader(); // initial
 
     function playScratchEffect() {
       if (scratchSound) {
@@ -269,14 +330,12 @@
         return;
       }
 
-      // Hide signup, unlock card
       signupSection.classList.add("hidden");
       overlay.style.display = "none";
       successMessage.style.display = "block";
-
       widgetSection.scrollIntoView({ behavior: "smooth" });
 
-      // Prime effect for first interaction
+      // Prime effect on unlock so audio is allowed
       playScratchEffect();
     });
 
@@ -297,4 +356,3 @@
 
 </body>
 </html>
-```0
