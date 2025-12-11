@@ -5,7 +5,7 @@
   <title>Scratch 'N' Eat – Instant Win Scratch Card</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Common Ninja script -->
+  <!-- Common Ninja script (for scratch widgets) -->
   <script src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
 
   <style>
@@ -54,7 +54,7 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* LAYOUT */
+    /* LAYOUT & CARDS */
     main {
       max-width: 760px;
       margin: 24px auto 40px;
@@ -90,7 +90,9 @@
       display: block;
     }
 
-    select {
+    select,
+    input[type="text"],
+    input[type="email"] {
       width: 100%;
       padding: 11px 12px;
       border-radius: 12px;
@@ -122,20 +124,16 @@
 
     .hidden { display: none !important; }
 
-    footer {
-      text-align: center;
-      padding: 18px 12px 30px;
-      font-size: 0.8rem;
-      color: #777;
+    .pill {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #fff3d7;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #7a5a00;
+      margin-bottom: 8px;
     }
-
-    .cn-wrapper {
-      min-height: 320px;
-      overflow: hidden;
-      position: relative; /* for scratch-lock */
-    }
-
-    .widget-instance { display: none; }
 
     .biz-logo {
       display: block;
@@ -145,41 +143,23 @@
       height: auto;
     }
 
-    .subheading {
-      font-weight: 600;
-      margin-bottom: 8px;
+    .cn-wrapper {
+      min-height: 320px;
+      overflow: hidden;
     }
 
-    /* Overlay that blocks scratching until login is done */
-    .scratch-lock {
-      position: absolute;
-      inset: 0;
-      background: rgba(255, 247, 230, 0.96);
-      border-radius: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 20;
+    footer {
       text-align: center;
-      font-weight: 600;
-      color: #444;
-      padding: 20px;
+      padding: 18px 12px 30px;
+      font-size: 0.8rem;
+      color: #777;
     }
 
     @media (max-width: 600px) {
-      .hero-header {
-        padding: 32px 14px 24px;
-      }
-      .tagline {
-        font-size: 1.2rem;
-      }
-      .card {
-        padding: 18px 14px 22px;
-        margin-bottom: 18px;
-      }
-      .card h2 {
-        font-size: 1.4rem;
-      }
+      .hero-header { padding: 32px 14px 24px; }
+      .tagline { font-size: 1.2rem; }
+      .card { padding: 18px 14px 22px; margin-bottom: 18px; }
+      .card h2 { font-size: 1.4rem; }
     }
   </style>
 </head>
@@ -187,7 +167,6 @@
 <body>
 
 <header class="hero-header">
-  <!-- Use whatever filename your new red logo is saved as -->
   <img src="Scratch 'N' Eat Logo Design.png"
        alt="Scratch 'N' Eat Logo"
        class="hero-logo">
@@ -229,7 +208,26 @@
     </form>
   </section>
 
-  <!-- STEP 2: LOGIN + SCRATCH -->
+  <!-- STEP 2: SIMPLE SIGN-UP -->
+  <section class="card hidden" id="signup-section">
+    <h2>Sign up to play</h2>
+    <p id="selected-info" class="pill"></p>
+    <p>Enter your details to unlock your scratch card.</p>
+
+    <form id="signup-form">
+      <div>
+        <label for="name">Name *</label>
+        <input id="name" type="text" required>
+      </div>
+      <div>
+        <label for="email">Email *</label>
+        <input id="email" type="email" required>
+      </div>
+      <button type="submit">Unlock Scratch Card</button>
+    </form>
+  </section>
+
+  <!-- STEP 3: SCRATCH CARD -->
   <section class="card hidden" id="widget-section">
     <h2>Scratch &amp; Win – <span id="widget-business-name"></span></h2>
 
@@ -238,29 +236,17 @@
          alt="Business Logo"
          class="biz-logo">
 
-    <p class="subheading">Sign up or sign in to play:</p>
-
-    <!-- Login / form widget -->
-    <div class="cn-wrapper" style="margin-bottom: 16px;">
-      <div class="commonninja_component pid-db61f090-e9fa-4a14-9388-05403a74f5db"></div>
-    </div>
-
-    <p>Then scratch below to reveal your prize:</p>
+    <p>Scratch below to reveal your prize:</p>
 
     <div class="cn-wrapper">
-      <!-- LOCK overlay that blocks scratching until login is done -->
-      <div id="scratch-lock" class="scratch-lock">
-        Please sign in above to unlock the scratch card.
-      </div>
-
       <!-- STAR OF BENGAL SCRATCH WIDGET -->
       <div id="widget-starofbengal"
-           class="commonninja_component pid-a681398a-7a0d-4da8-90d1-598d4137f6f5 widget-instance">
+           class="commonninja_component pid-a681398a-7a0d-4da8-90d1-598d4137f6f5 hidden">
       </div>
 
       <!-- GREEN CHILLI SCRATCH WIDGET (same PID for now) -->
       <div id="widget-greenchilli"
-           class="commonninja_component pid-a681398a-7a0d-4da8-90d1-598d4137f6f5 widget-instance">
+           class="commonninja_component pid-a681398a-7a0d-4da8-90d1-598d4137f6f5 hidden">
       </div>
     </div>
   </section>
@@ -277,15 +263,18 @@
   const townSelect     = document.getElementById("town");
   const cuisineSelect  = document.getElementById("cuisine");
   const businessSelect = document.getElementById("business");
-  const selectorForm   = document.getElementById("selector-form");
 
+  const selectorForm   = document.getElementById("selector-form");
+  const signupSection  = document.getElementById("signup-section");
+  const signupForm     = document.getElementById("signup-form");
   const widgetSection  = document.getElementById("widget-section");
+
+  const selectedInfo   = document.getElementById("selected-info");
   const widgetBizName  = document.getElementById("widget-business-name");
   const bizLogo        = document.getElementById("biz-logo");
 
   const widgetStar     = document.getElementById("widget-starofbengal");
   const widgetGreen    = document.getElementById("widget-greenchilli");
-  const scratchLock    = document.getElementById("scratch-lock");
 
   // Which businesses show for each town + cuisine
   const businessData = {
@@ -312,7 +301,7 @@
   townSelect.addEventListener("change", updateBusinessDropdown);
   cuisineSelect.addEventListener("change", updateBusinessDropdown);
 
-  // STEP 1 → SHOW LOGIN + SCRATCH SECTION
+  // STEP 1 → STEP 2
   selectorForm.addEventListener("submit", e => {
     e.preventDefault();
 
@@ -325,61 +314,55 @@
       return;
     }
 
-    widgetBizName.textContent = biz;
+    selectedInfo.textContent = `${town} • ${cuisine} • ${biz}`;
+    signupSection.classList.remove("hidden");
+    signupSection.scrollIntoView({ behavior: "smooth" });
+  });
 
-    // Set logo based on business
+  // STEP 2 → STEP 3
+  signupForm.addEventListener("submit", e => {
+    e.preventDefault();
+
+    const name  = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const biz   = businessSelect.value;
+
+    if (!name || !email) {
+      alert("Please enter your name and email.");
+      return;
+    }
+
+    // Very basic email check
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+
+    // Set heading + logo
+    widgetBizName.textContent = biz;
     if (biz === "Star Of Bengal") {
       bizLogo.src = "starofbengal.png";
     } else if (biz === "Green Chilli") {
       bizLogo.src = "greenchilli.png";
     } else {
-      bizLogo.src = ""; // fallback
+      bizLogo.src = "";
     }
 
-    // Show only the relevant scratch widget
-    widgetStar.style.display  = "none";
-    widgetGreen.style.display = "none";
-
+    // Show only correct scratch widget
+    widgetStar.classList.add("hidden");
+    widgetGreen.classList.add("hidden");
     if (biz === "Star Of Bengal") {
-      widgetStar.style.display = "block";
+      widgetStar.classList.remove("hidden");
     } else if (biz === "Green Chilli") {
-      widgetGreen.style.display = "block";
+      widgetGreen.classList.remove("hidden");
     }
 
-    // Re-lock each time they pick a business
-    scratchLock.style.display = "flex";
-
+    // Show scratch section
+    signupSection.classList.add("hidden");
     widgetSection.classList.remove("hidden");
     widgetSection.scrollIntoView({ behavior: "smooth" });
-  });
 
-  /*
-    🔓 UNLOCK LOGIC:
-    Your success screen text (from screenshot):
-
-      "That's You In"
-      "Start ScratchIng Below"  (or similar)
-
-    To make it robust, we just look for:
-      - "You In"
-      - "Start Scratch"
-  */
-  const observer = new MutationObserver(() => {
-    const loginWidget = document.querySelector(
-      ".commonninja_component.pid-db61f090-e9fa-4a14-9388-05403a74f5db"
-    );
-    if (!loginWidget) return;
-
-    const text = (loginWidget.innerText || "").toLowerCase();
-
-    if (text.includes("you in") || text.includes("start scratch")) {
-      scratchLock.style.display = "none";
-    }
-  });
-
-  observer.observe(document.body, {
-    childList: true,
-    subtree: true
+    // At this point the scratch widget is fully active – no overlay needed
   });
 </script>
 
