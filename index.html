@@ -19,7 +19,7 @@
 
     body {
       margin: 0;
-      font-family: system-ui, sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: var(--cream);
       color: var(--dark);
     }
@@ -36,6 +36,7 @@
       width: 320px;
       max-width: 85vw;
       margin: 0 auto;
+      display: block;
       opacity: 0;
       animation: fadeIn 1.3s ease forwards;
     }
@@ -53,6 +54,7 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* LAYOUT */
     main {
       max-width: 760px;
       margin: 24px auto 40px;
@@ -62,34 +64,122 @@
     .card {
       background: #fff;
       border-radius: 18px;
-      padding: 22px 18px;
+      padding: 22px 18px 24px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.08);
       margin-bottom: 20px;
       position: relative;
       overflow: hidden;
     }
 
+    .card h2 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 1.6rem;
+    }
+
+    .card p {
+      margin-top: 4px;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+
+    label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    select {
+      width: 100%;
+      padding: 11px 12px;
+      border-radius: 12px;
+      border: 1px solid #d4d4d4;
+      font-size: 1rem;
+      background: #fff;
+    }
+
+    form {
+      display: grid;
+      gap: 12px;
+    }
+
+    button {
+      padding: 13px 18px;
+      border-radius: 999px;
+      border: none;
+      background: var(--red);
+      color: var(--cream);
+      font-weight: 700;
+      font-size: 1.02rem;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      opacity: 0.93;
+    }
+
+    .hidden { display: none !important; }
+
+    footer {
+      text-align: center;
+      padding: 18px 12px 30px;
+      font-size: 0.8rem;
+      color: #777;
+    }
+
+    .cn-wrapper {
+      min-height: 320px;
+      overflow: hidden;
+      position: relative; /* for scratch-lock */
+    }
+
+    .widget-instance { display: none; }
+
     .biz-logo {
       display: block;
       margin: 8px auto 16px;
       width: 70%;
       max-width: 260px;
+      height: auto;
     }
 
-    .widget-instance { display: none; }
+    .subheading {
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
 
+    /* Overlay that blocks scratching until login is done */
     .scratch-lock {
       position: absolute;
       inset: 0;
-      background: rgba(255,247,230,0.96);
-      padding: 20px;
+      background: rgba(255, 247, 230, 0.96);
       border-radius: 18px;
       display: flex;
       align-items: center;
       justify-content: center;
+      z-index: 20;
       text-align: center;
       font-weight: 600;
-      z-index: 20;
+      color: #444;
+      padding: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .hero-header {
+        padding: 32px 14px 24px;
+      }
+      .tagline {
+        font-size: 1.2rem;
+      }
+      .card {
+        padding: 18px 14px 22px;
+        margin-bottom: 18px;
+      }
+      .card h2 {
+        font-size: 1.4rem;
+      }
     }
   </style>
 </head>
@@ -97,79 +187,107 @@
 <body>
 
 <header class="hero-header">
-  <img src="Scratch 'N' Eat Logo Design.png" class="hero-logo" alt="Logo">
+  <!-- Use whatever filename your new red logo is saved as -->
+  <img src="Scratch 'N' Eat Logo Design.png"
+       alt="Scratch 'N' Eat Logo"
+       class="hero-logo">
   <p class="tagline">Scratch. Win. Eat.</p>
 </header>
 
 <main>
 
-  <!-- STEP 1 -->
+  <!-- STEP 1: SELECT TAKEAWAY -->
   <section class="card" id="selector-section">
     <h2>Find your takeaway</h2>
+    <p>Select your town, cuisine and business to play for their scratch card.</p>
 
     <form id="selector-form">
-      <label>Town *</label>
-      <select id="town" required>
-        <option value="">Select your town</option>
-        <option value="Bangor">Bangor</option>
-      </select>
+      <div>
+        <label for="town">Town *</label>
+        <select id="town" required>
+          <option value="">Select your town</option>
+          <option value="Bangor">Bangor</option>
+        </select>
+      </div>
 
-      <label>Cuisine *</label>
-      <select id="cuisine" required>
-        <option value="">Select cuisine</option>
-        <option value="Indian">Indian</option>
-      </select>
+      <div>
+        <label for="cuisine">Cuisine *</label>
+        <select id="cuisine" required>
+          <option value="">Select cuisine</option>
+          <option value="Indian">Indian</option>
+        </select>
+      </div>
 
-      <label>Business *</label>
-      <select id="business" required>
-        <option value="">Select business</option>
-      </select>
+      <div>
+        <label for="business">Business *</label>
+        <select id="business" required>
+          <option value="">Select business</option>
+        </select>
+      </div>
 
       <button type="submit">Continue</button>
     </form>
   </section>
 
-  <!-- STEP 2 -->
+  <!-- STEP 2: LOGIN + SCRATCH -->
   <section class="card hidden" id="widget-section">
-    <h2>Scratch & Win – <span id="widget-business-name"></span></h2>
+    <h2>Scratch &amp; Win – <span id="widget-business-name"></span></h2>
 
-    <img id="biz-logo" class="biz-logo" alt="Business Logo">
+    <img id="biz-logo"
+         src=""
+         alt="Business Logo"
+         class="biz-logo">
 
-    <p><strong>Sign up or sign in to play:</strong></p>
+    <p class="subheading">Sign up or sign in to play:</p>
 
-    <div class="cn-wrapper" style="margin-bottom: 12px;">
+    <!-- Login / form widget -->
+    <div class="cn-wrapper" style="margin-bottom: 16px;">
       <div class="commonninja_component pid-db61f090-e9fa-4a14-9388-05403a74f5db"></div>
     </div>
 
     <p>Then scratch below to reveal your prize:</p>
 
-    <div class="cn-wrapper" style="min-height:320px; position:relative;">
-
+    <div class="cn-wrapper">
+      <!-- LOCK overlay that blocks scratching until login is done -->
       <div id="scratch-lock" class="scratch-lock">
         Please sign in above to unlock the scratch card.
       </div>
 
+      <!-- STAR OF BENGAL SCRATCH WIDGET -->
       <div id="widget-starofbengal"
-           class="commonninja_component pid-a681398a-7a0d-4da8-90d1-598d4137f6f5 widget-instance"></div>
+           class="commonninja_component pid-a681398a-7a0d-4da8-90d1-598d4137f6f5 widget-instance">
+      </div>
 
+      <!-- GREEN CHILLI SCRATCH WIDGET (same PID for now) -->
       <div id="widget-greenchilli"
-           class="commonninja_component pid-a681398a-7a0d-4da8-90d1-598d4137f6f5 widget-instance"></div>
+           class="commonninja_component pid-a681398a-7a0d-4da8-90d1-598d4137f6f5 widget-instance">
+      </div>
     </div>
   </section>
 
 </main>
 
+<footer>
+  © <span id="year"></span> Scratch 'N' Eat. All rights reserved.
+</footer>
+
 <script>
-  const townSelect = document.getElementById("town");
-  const cuisineSelect = document.getElementById("cuisine");
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const townSelect     = document.getElementById("town");
+  const cuisineSelect  = document.getElementById("cuisine");
   const businessSelect = document.getElementById("business");
-  const widgetSection = document.getElementById("widget-section");
-  const widgetBizName = document.getElementById("widget-business-name");
-  const bizLogo = document.getElementById("biz-logo");
+  const selectorForm   = document.getElementById("selector-form");
 
-  const widgetStar = document.getElementById("widget-starofbengal");
-  const widgetGreen = document.getElementById("widget-greenchilli");
+  const widgetSection  = document.getElementById("widget-section");
+  const widgetBizName  = document.getElementById("widget-business-name");
+  const bizLogo        = document.getElementById("biz-logo");
 
+  const widgetStar     = document.getElementById("widget-starofbengal");
+  const widgetGreen    = document.getElementById("widget-greenchilli");
+  const scratchLock    = document.getElementById("scratch-lock");
+
+  // Which businesses show for each town + cuisine
   const businessData = {
     "Bangor": {
       "Indian": ["Star Of Bengal", "Green Chilli"]
@@ -182,10 +300,11 @@
     const businesses = businessData[town]?.[cuisine] || [];
 
     businessSelect.innerHTML = `<option value="">Select business</option>`;
-    businesses.forEach(b => {
+
+    businesses.forEach(biz => {
       const opt = document.createElement("option");
-      opt.value = b;
-      opt.textContent = b;
+      opt.value = biz;
+      opt.textContent = biz;
       businessSelect.appendChild(opt);
     });
   }
@@ -193,50 +312,75 @@
   townSelect.addEventListener("change", updateBusinessDropdown);
   cuisineSelect.addEventListener("change", updateBusinessDropdown);
 
-  document.getElementById("selector-form").addEventListener("submit", e => {
+  // STEP 1 → SHOW LOGIN + SCRATCH SECTION
+  selectorForm.addEventListener("submit", e => {
     e.preventDefault();
 
-    const biz = businessSelect.value;
-    if (!biz) return;
+    const town    = townSelect.value;
+    const cuisine = cuisineSelect.value;
+    const biz     = businessSelect.value;
+
+    if (!town || !cuisine || !biz) {
+      alert("Please choose a town, cuisine and business.");
+      return;
+    }
 
     widgetBizName.textContent = biz;
 
-    bizLogo.src = biz === "Star Of Bengal" ? "starofbengal.png" : "greenchilli.png";
+    // Set logo based on business
+    if (biz === "Star Of Bengal") {
+      bizLogo.src = "starofbengal.png";
+    } else if (biz === "Green Chilli") {
+      bizLogo.src = "greenchilli.png";
+    } else {
+      bizLogo.src = ""; // fallback
+    }
 
-    widgetStar.style.display = "none";
+    // Show only the relevant scratch widget
+    widgetStar.style.display  = "none";
     widgetGreen.style.display = "none";
 
-    if (biz === "Star Of Bengal") widgetStar.style.display = "block";
-    if (biz === "Green Chilli") widgetGreen.style.display = "block";
+    if (biz === "Star Of Bengal") {
+      widgetStar.style.display = "block";
+    } else if (biz === "Green Chilli") {
+      widgetGreen.style.display = "block";
+    }
 
-    document.getElementById("scratch-lock").style.display = "flex";
+    // Re-lock each time they pick a business
+    scratchLock.style.display = "flex";
 
     widgetSection.classList.remove("hidden");
     widgetSection.scrollIntoView({ behavior: "smooth" });
   });
 
-  /*  
-    🔓 UNLOCK LOGIC  
-    Unlocks when the login widget shows:
-      - "That's You In"
-      - "Start Scratching"
+  /*
+    🔓 UNLOCK LOGIC:
+    Your success screen text (from screenshot):
+
+      "That's You In"
+      "Start ScratchIng Below"  (or similar)
+
+    To make it robust, we just look for:
+      - "You In"
+      - "Start Scratch"
   */
   const observer = new MutationObserver(() => {
     const loginWidget = document.querySelector(
       ".commonninja_component.pid-db61f090-e9fa-4a14-9388-05403a74f5db"
     );
-
     if (!loginWidget) return;
 
-    const text = loginWidget.innerText;
+    const text = (loginWidget.innerText || "").toLowerCase();
 
-    if (text.includes("That's You In") || text.includes("Start Scratching")) {
-      const lock = document.getElementById("scratch-lock");
-      if (lock) lock.style.display = "none";
+    if (text.includes("you in") || text.includes("start scratch")) {
+      scratchLock.style.display = "none";
     }
   });
 
-  observer.observe(document.body, { childList: true, subtree: true });
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
 </script>
 
 </body>
