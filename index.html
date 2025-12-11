@@ -361,18 +361,23 @@
     widgetSection.scrollIntoView({ behavior: "smooth" });
   });
 
-  // UNLOCK SCRATCH WHEN USER HITS "Start Scratching" IN THE LOGIN WIDGET
-  document.addEventListener("click", function (e) {
-    const target = e.target;
-    if (!target || !target.textContent) return;
+  // 🔓 UNLOCK SCRATCH WHEN LOGIN WIDGET SHOWS "Form submitted"
+  const observer = new MutationObserver(() => {
+    const loginWidget = document.querySelector(
+      ".commonninja_component.pid-db61f090-e9fa-4a14-9388-05403a74f5db"
+    );
 
-    // This looks for the button text inside the login widget
-    if (target.textContent.includes("Start Scratching")) {
+    if (loginWidget && loginWidget.innerText.includes("Form submitted")) {
       const lock = document.getElementById("scratch-lock");
       if (lock) {
         lock.style.display = "none";
       }
     }
+  });
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
   });
 </script>
 
