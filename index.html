@@ -220,9 +220,7 @@
     }
   </style>
 </head>
-
 <body>
-
 <header class="hero-header">
   <img src="Scratch 'N' Eat Logo Design.png"
        alt="Scratch 'N' Eat Logo"
@@ -231,12 +229,10 @@
 </header>
 
 <main>
-
   <!-- STEP 1: CHOOSE TOWN / CUISINE / BUSINESS -->
   <section class="card" id="selector-section">
     <h2>Find your takeaway</h2>
     <p>Select your town, cuisine and business to play for their scratch card.</p>
-
     <form id="selector-form">
       <div>
         <label for="town">Town *</label>
@@ -245,7 +241,6 @@
           <option value="Bangor">Bangor</option>
         </select>
       </div>
-
       <div>
         <label for="cuisine">Cuisine *</label>
         <select id="cuisine" required>
@@ -253,7 +248,6 @@
           <option value="Indian">Indian</option>
         </select>
       </div>
-
       <div>
         <label for="business">Business *</label>
         <select id="business" required>
@@ -261,7 +255,6 @@
           <option value="Star Of Bengal">Star Of Bengal</option>
         </select>
       </div>
-
       <button type="submit">Continue</button>
     </form>
   </section>
@@ -271,18 +264,15 @@
     <h2 id="signup-title">Sign up or sign in to play.</h2>
     <p id="restaurant-label" class="pill"></p>
     <p>Enter your details below to unlock your scratch card.</p>
-
     <form id="signup-form" novalidate>
       <div>
         <label for="name">Name *</label>
         <input type="text" id="name" required />
       </div>
-
       <div>
         <label for="email">Email *</label>
         <input type="email" id="email" required />
       </div>
-
       <button type="submit">Unlock Scratch Card</button>
     </form>
   </section>
@@ -311,7 +301,6 @@
       <div class="commonninja_component pid-a681398a-7a0d-4da8-90d1-598d4137f6f5"></div>
     </div>
   </section>
-
 </main>
 
 <footer>
@@ -321,20 +310,17 @@
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
 
-  const selectorForm   = document.getElementById("selector-form");
-  const townSelect     = document.getElementById("town");
-  const cuisineSelect  = document.getElementById("cuisine");
-  const businessSelect = document.getElementById("business");
-  const signupSection  = document.getElementById("signup-section");
-  const widgetSection  = document.getElementById("widget-section");
-  const restaurantLabel= document.getElementById("restaurant-label");
-  const widgetBizName  = document.getElementById("widget-business-name");
-  const signupForm     = document.getElementById("signup-form");
-  const overlay        = document.getElementById("widget-overlay");
-  const successMessage = document.getElementById("success-message");
-
-  // 🔗 YOUR GOOGLE APPS SCRIPT WEB APP URL
-  const BACKEND_URL = "https://script.google.com/macros/s/AKfycbwMRYDqo-iNkxMpXYX2V948tCTo3e7hPvbKYRSoFF9w8Yl5bFQjEP1EKP4F12TQiflI/exec"
+  const selectorForm    = document.getElementById("selector-form");
+  const townSelect      = document.getElementById("town");
+  const cuisineSelect   = document.getElementById("cuisine");
+  const businessSelect  = document.getElementById("business");
+  const signupSection   = document.getElementById("signup-section");
+  const widgetSection   = document.getElementById("widget-section");
+  const restaurantLabel = document.getElementById("restaurant-label");
+  const widgetBizName   = document.getElementById("widget-business-name");
+  const signupForm      = document.getElementById("signup-form");
+  const overlay         = document.getElementById("widget-overlay");
+  const successMessage  = document.getElementById("success-message");
 
   // STEP 1 → STEP 2
   selectorForm.addEventListener("submit", function (e) {
@@ -357,15 +343,15 @@
     signupSection.scrollIntoView({ behavior: "smooth" });
   });
 
-  // STEP 2 → STEP 3 (with backend save)
-  signupForm.addEventListener("submit", async function (e) {
+  // STEP 2 → STEP 3 (no backend – purely front-end)
+  signupForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    const name  = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const town    = townSelect.value.trim();
-    const cuisine = cuisineSelect.value.trim();
-    const business= businessSelect.value.trim();
+    const name   = document.getElementById("name").value.trim();
+    const email  = document.getElementById("email").value.trim();
+    const town   = townSelect.value.trim();
+    const cuisine= cuisineSelect.value.trim();
+    const business = businessSelect.value.trim();
 
     if (!name || !email) {
       alert("Please enter both your name and email.");
@@ -377,29 +363,7 @@
       return;
     }
 
-    // Send data to Google Sheets backend
-    try {
-      const res = await fetch(BACKEND_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, town, cuisine, business })
-      });
-
-      const result = await res.json();
-      if (!result.ok) {
-        console.error(result);
-        alert("There was a problem saving your play. Please try again.");
-        return;
-      }
-
-      // Later we can use result.allowed to block replays
-    } catch (err) {
-      console.error(err);
-      alert("Network error. Please try again.");
-      return;
-    }
-
-    // If saved OK → show scratch card
+    // Directly unlock scratch card (no Google Apps Script)
     signupSection.classList.add("hidden");
     widgetSection.classList.remove("hidden");
     overlay.style.display = "none";
@@ -407,6 +371,5 @@
     widgetSection.scrollIntoView({ behavior: "smooth" });
   });
 </script>
-
 </body>
 </html>
