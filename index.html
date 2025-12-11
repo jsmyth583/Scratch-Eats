@@ -134,7 +134,7 @@
     .cn-wrapper {
       min-height: 320px;
       overflow: hidden;
-      position: relative;
+      position: relative; /* needed for scratch-lock overlay */
     }
 
     .widget-instance {
@@ -152,6 +152,22 @@
     .subheading {
       font-weight: 600;
       margin-bottom: 8px;
+    }
+
+    /* Overlay that blocks scratching until login is done */
+    .scratch-lock {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 247, 230, 0.96);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+      text-align: center;
+      font-weight: 600;
+      color: #444;
+      padding: 20px;
     }
 
     @media (max-width: 600px) {
@@ -228,14 +244,20 @@
 
     <p class="subheading">Sign up or sign in to play:</p>
 
-    <!-- NEW: CommonNinja widget that handles sign-in / gating -->
+    <!-- CommonNinja login / gate widget -->
     <div class="cn-wrapper" style="margin-bottom: 16px;">
       <div class="commonninja_component pid-db61f090-e9fa-4a14-9388-05403a74f5db"></div>
     </div>
 
     <p>Then scratch below to reveal your prize:</p>
 
+    <!-- Scratch card area (initially locked by overlay) -->
     <div class="cn-wrapper">
+      <!-- LOCK overlay that blocks scratching until login is done -->
+      <div id="scratch-lock" class="scratch-lock">
+        <p>Please sign in above to unlock the scratch card.</p>
+      </div>
+
       <!-- STAR OF BENGAL SCRATCH WIDGET -->
       <div id="widget-starofbengal"
            class="commonninja_component pid-a681398a-7a0d-4da8-90d1-598d4137f6f5 widget-instance">
@@ -268,7 +290,7 @@
   const widgetStar      = document.getElementById("widget-starofbengal");
   const widgetGreen     = document.getElementById("widget-greenchilli");
 
-  // BUSINESS DIRECTORY – controls which businesses appear for town + cuisine
+  // BUSINESS DIRECTORY – which businesses appear for each town + cuisine
   const businessData = {
     "Bangor": {
       "Indian": ["Star Of Bengal", "Green Chilli"]
@@ -293,7 +315,7 @@
   townSelect.addEventListener("change", updateBusinessDropdown);
   cuisineSelect.addEventListener("change", updateBusinessDropdown);
 
-  // STEP 1 → DIRECTLY TO WIDGET SECTION (with login widget + scratch widget)
+  // STEP 1 → SHOW LOGIN + SCRATCH SECTION
   selectorForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
@@ -318,6 +340,12 @@
       bizLogo.src = "starofbengal.png"; // fallback
     }
 
+    // Reset lock overlay every time they choose a business
+    const lock = document.getElementById("scratch-lock");
+    if (lock) {
+      lock.style.display = "flex";
+    }
+
     // Show only the correct scratch widget
     widgetStar.style.display  = "none";
     widgetGreen.style.display = "none";
@@ -331,6 +359,20 @@
     // Show the widget section
     widgetSection.classList.remove("hidden");
     widgetSection.scrollIntoView({ behavior: "smooth" });
+  });
+
+  // UNLOCK SCRATCH WHEN USER HITS "Start Scratching" IN THE LOGIN WIDGET
+  document.addEventListener("click", function (e) {
+    const target = e.target;
+    if (!target || !target.textContent) return;
+
+    // This looks for the button text inside the login widget
+    if (target.textContent.includes("Start Scratching")) {
+      const lock = document.getElementById("scratch-lock");
+      if (lock) {
+        lock.style.display = "none";
+      }
+    }
   });
 </script>
 
