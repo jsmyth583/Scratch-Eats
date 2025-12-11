@@ -5,12 +5,12 @@
   <title>Scratch 'N' Eat – Instant Win Scratch Card</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Common Ninja scratch-card script -->
+  <!-- Common Ninja scratch-card script (only needs to be loaded once) -->
   <script src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
 
   <style>
     :root {
-      /* Exact red from your Scratch 'N' Eat logo */
+      /* Exact red from your Scratch 'N' Eat / Scratch Eats logo */
       --red: #EE2E1E;
       --cream: #fff7e6;
       --dark: #222;
@@ -184,9 +184,15 @@
     .cn-wrapper {
       min-height: 320px;
       overflow: hidden; /* make sure widget doesn't poke out on small screens */
+      position: relative;
     }
 
-    /* Star Of Bengal logo */
+    /* Each widget instance hidden by default */
+    .widget-instance {
+      display: none;
+    }
+
+    /* Business logo */
     .biz-logo {
       display: block;
       margin: 8px auto 16px;
@@ -222,7 +228,8 @@
 </head>
 <body>
 <header class="hero-header">
-  <img src="Scratch 'N' Eat Logo Design.png"
+  <!-- Using your saved Scratch Eats logo -->
+  <img src="scratch-eats-logo.png"
        alt="Scratch 'N' Eat Logo"
        class="hero-logo">
   <p class="tagline">Scratch. Win. Eat.</p>
@@ -239,6 +246,7 @@
         <select id="town" required>
           <option value="">Select your town</option>
           <option value="Bangor">Bangor</option>
+          <!-- Add more towns here later -->
         </select>
       </div>
       <div>
@@ -246,13 +254,14 @@
         <select id="cuisine" required>
           <option value="">Select cuisine</option>
           <option value="Indian">Indian</option>
+          <!-- Add more cuisines here later -->
         </select>
       </div>
       <div>
         <label for="business">Business *</label>
+        <!-- This will be filled dynamically based on town + cuisine -->
         <select id="business" required>
           <option value="">Select business</option>
-          <option value="Star Of Bengal">Star Of Bengal</option>
         </select>
       </div>
       <button type="submit">Continue</button>
@@ -289,16 +298,26 @@
 
     <h2>Scratch &amp; Win – <span id="widget-business-name">Star Of Bengal</span></h2>
 
-    <!-- Star Of Bengal logo -->
-    <img src="starofbengal.png"
-         alt="Star Of Bengal Logo"
+    <!-- Business logo (dynamic) -->
+    <img id="biz-logo"
+         src="starofbengal.png"
+         alt="Business Logo"
          class="biz-logo">
 
     <p>Reveal your prize below:</p>
 
     <div class="cn-wrapper">
-      <!-- Your Common Ninja scratch card widget -->
-      <div class="commonninja_component pid-a681398a-7a0d-4da8-90d1-598d4137f6f5"></div>
+      <!-- Widget for Star Of Bengal -->
+      <div
+        id="widget-starofbengal"
+        class="commonninja_component pid-a681398a-7a0d-4da8-90d1-598d4137f6f5 widget-instance">
+      </div>
+
+      <!-- Widget for Green Chilli (currently same PID as Star Of Bengal) -->
+      <div
+        id="widget-greenchilli"
+        class="commonninja_component pid-a681398a-7a0d-4da8-90d1-598d4137f6f5 widget-instance">
+      </div>
     </div>
   </section>
 </main>
@@ -321,6 +340,46 @@
   const signupForm      = document.getElementById("signup-form");
   const overlay         = document.getElementById("widget-overlay");
   const successMessage  = document.getElementById("success-message");
+
+  const bizLogo         = document.getElementById("biz-logo");
+  const widgetStar      = document.getElementById("widget-starofbengal");
+  const widgetGreen     = document.getElementById("widget-greenchilli");
+
+  // --- BUSINESS DIRECTORY ---
+  // This defines which businesses appear for each Town + Cuisine combo
+  const businessData = {
+    "Bangor": {
+      "Indian": [
+        "Star Of Bengal",
+        "Green Chilli"
+      ]
+    }
+    // You can add more towns/cuisines like:
+    // "Newtownards": { "Pizza": ["Some Pizza Place"] }
+  };
+
+  // When user selects town or cuisine → update businesses dropdown
+  function updateBusinessDropdown() {
+    const town = townSelect.value;
+    const cuisine = cuisineSelect.value;
+
+    const businesses = businessData[town]?.[cuisine] || [];
+
+    // Reset dropdown
+    businessSelect.innerHTML = `<option value="">Select business</option>`;
+
+    // Populate with new options
+    businesses.forEach(biz => {
+      const option = document.createElement("option");
+      option.value = biz;
+      option.textContent = biz;
+      businessSelect.appendChild(option);
+    });
+  }
+
+  // Trigger updates whenever town/cuisine change
+  townSelect.addEventListener("change", updateBusinessDropdown);
+  cuisineSelect.addEventListener("change", updateBusinessDropdown);
 
   // STEP 1 → STEP 2
   selectorForm.addEventListener("submit", function (e) {
@@ -347,10 +406,10 @@
   signupForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    const name   = document.getElementById("name").value.trim();
-    const email  = document.getElementById("email").value.trim();
-    const town   = townSelect.value.trim();
-    const cuisine= cuisineSelect.value.trim();
+    const name     = document.getElementById("name").value.trim();
+    const email    = document.getElementById("email").value.trim();
+    const town     = townSelect.value.trim();
+    const cuisine  = cuisineSelect.value.trim();
     const business = businessSelect.value.trim();
 
     if (!name || !email) {
@@ -363,7 +422,26 @@
       return;
     }
 
-    // Directly unlock scratch card (no Google Apps Script)
+    // Choose logo based on business
+    if (business === "Star Of Bengal") {
+      bizLogo.src = "starofbengal.png";
+    } else if (business === "Green Chilli") {
+      bizLogo.src = "greenchilli.png";
+    } else {
+      bizLogo.src = "starofbengal.png"; // fallback
+    }
+
+    // Show correct widget based on business
+    widgetStar.style.display  = "none";
+    widgetGreen.style.display = "none";
+
+    if (business === "Star Of Bengal") {
+      widgetStar.style.display = "block";
+    } else if (business === "Green Chilli") {
+      widgetGreen.style.display = "block";
+    }
+
+    // Unlock scratch card
     signupSection.classList.add("hidden");
     widgetSection.classList.remove("hidden");
     overlay.style.display = "none";
