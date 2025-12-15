@@ -116,11 +116,11 @@
       color: #777;
     }
 
-    /* NEW: quick highlight on mobile so users notice sign in */
+    /* NEW: highlight effect for sign in/up section */
     .pulse {
-      outline: 3px solid rgba(238, 46, 30, 0.35);
-      box-shadow: 0 0 0 6px rgba(238, 46, 30, 0.12);
-      transition: box-shadow 0.2s ease;
+      outline: 3px solid rgba(238, 46, 30, 0.4);
+      box-shadow: 0 0 0 8px rgba(238, 46, 30, 0.15);
+      border-radius: 18px;
     }
   </style>
 </head>
@@ -128,7 +128,7 @@
 <body>
 
 <header class="hero-header">
-  <img src="Scratch 'N' Eat Logo Design.png" class="hero-logo">
+  <img src="Scratch 'N' Eat Logo Design.png" class="hero-logo" alt="Scratch 'N' Eat Logo">
   <p class="tagline">Scratch. Win. Eat.</p>
 </header>
 
@@ -157,7 +157,13 @@
         <option value="">Select business</option>
       </select>
 
-      <button type="submit">Continue</button>
+      <!-- NEW: clearer button text -->
+      <button type="submit">Continue to Sign In/Up</button>
+
+      <!-- NEW: clarity hint -->
+      <p style="text-align:center;font-size:0.85rem;color:#666;margin:0;">
+        Sign in/up is required to play the scratch card
+      </p>
     </form>
   </section>
 
@@ -175,16 +181,16 @@
 
   <!-- STEP 3 -->
   <section class="card hidden" id="widget-section">
-    <h2>Scratch & Win – <span id="widget-business-name"></span></h2>
-    <img id="biz-logo" class="biz-logo">
+    <h2>Scratch &amp; Win – <span id="widget-business-name"></span></h2>
+    <img id="biz-logo" class="biz-logo" alt="Business Logo">
 
     <div class="cn-wrapper">
 
-      <!-- Star Of Bengal -->
+      <!-- Star Of Bengal (NEW PID) -->
       <div id="widget-starofbengal"
            class="commonninja_component pid-d7da8f39-c303-4483-8886-9e67726eefb3 hidden"></div>
 
-      <!-- Green Chilli -->
+      <!-- Green Chilli (PID as requested) -->
       <div id="widget-greenchilli"
            class="commonninja_component pid-a681398a-7a0d-4da8-90d1-598d4137f6f5 hidden"></div>
 
@@ -207,17 +213,17 @@
     "Newtownards": ["The Ganges"]
   };
 
-  const selectorForm = document.getElementById("selector-form");
-  const signupForm   = document.getElementById("signup-form");
+  const selectorForm  = document.getElementById("selector-form");
+  const signupForm    = document.getElementById("signup-form");
   const signupSection = document.getElementById("signup-section");
   const widgetSection = document.getElementById("widget-section");
 
-  const townSelect = document.getElementById("town");
+  const townSelect     = document.getElementById("town");
   const businessSelect = document.getElementById("business");
 
   const widgetBizName = document.getElementById("widget-business-name");
-  const bizLogo = document.getElementById("biz-logo");
-  const selectedInfo = document.getElementById("selected-info");
+  const bizLogo       = document.getElementById("biz-logo");
+  const selectedInfo  = document.getElementById("selected-info");
 
   const widgets = {
     "Star Of Bengal": "widget-starofbengal",
@@ -235,22 +241,44 @@
     });
   });
 
+  // NEW: mobile-safe forced scroll + pulse highlight
   selectorForm.addEventListener("submit", e => {
     e.preventDefault();
+
+    if (!townSelect.value || !businessSelect.value) {
+      alert("Please select your town and business.");
+      return;
+    }
 
     selectedInfo.textContent = `${townSelect.value} • Indian • ${businessSelect.value}`;
     signupSection.classList.remove("hidden");
 
-    // NEW: auto-scroll + highlight so users see they must sign in/up
-    signupSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    setTimeout(() => {
+      const y = signupSection.getBoundingClientRect().top + window.pageYOffset - 20;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }, 100);
+
     signupSection.classList.add("pulse");
-    setTimeout(() => signupSection.classList.remove("pulse"), 900);
+    setTimeout(() => signupSection.classList.remove("pulse"), 1200);
   });
 
   signupForm.addEventListener("submit", e => {
     e.preventDefault();
 
-    const biz = businessSelect.value;
+    const name  = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const biz   = businessSelect.value;
+
+    if (!name || !email) {
+      alert("Please enter your name and email.");
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+
     widgetBizName.textContent = biz;
 
     bizLogo.src =
@@ -266,7 +294,12 @@
 
     signupSection.classList.add("hidden");
     widgetSection.classList.remove("hidden");
-    widgetSection.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    // Scroll to scratch card section for a smooth flow on mobile
+    setTimeout(() => {
+      const y = widgetSection.getBoundingClientRect().top + window.pageYOffset - 20;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }, 100);
   });
 </script>
 
