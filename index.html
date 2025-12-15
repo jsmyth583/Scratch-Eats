@@ -115,6 +115,13 @@
       font-size: 0.8rem;
       color: #777;
     }
+
+    /* NEW: quick highlight on mobile so users notice sign in */
+    .pulse {
+      outline: 3px solid rgba(238, 46, 30, 0.35);
+      box-shadow: 0 0 0 6px rgba(238, 46, 30, 0.12);
+      transition: box-shadow 0.2s ease;
+    }
   </style>
 </head>
 
@@ -156,13 +163,13 @@
 
   <!-- STEP 2 -->
   <section class="card hidden" id="signup-section">
-    <h2>Sign up to play</h2>
+    <h2>Sign In/Up To Play</h2>
     <p id="selected-info" class="pill"></p>
 
     <form id="signup-form">
       <input id="name" placeholder="Name" required>
       <input id="email" placeholder="Email" type="email" required>
-      <button type="submit">Unlock Scratch Card</button>
+      <button type="submit">Sign In/Up &amp; Play</button>
     </form>
   </section>
 
@@ -230,8 +237,14 @@
 
   selectorForm.addEventListener("submit", e => {
     e.preventDefault();
+
     selectedInfo.textContent = `${townSelect.value} • Indian • ${businessSelect.value}`;
     signupSection.classList.remove("hidden");
+
+    // NEW: auto-scroll + highlight so users see they must sign in/up
+    signupSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    signupSection.classList.add("pulse");
+    setTimeout(() => signupSection.classList.remove("pulse"), 900);
   });
 
   signupForm.addEventListener("submit", e => {
@@ -253,6 +266,7 @@
 
     signupSection.classList.add("hidden");
     widgetSection.classList.remove("hidden");
+    widgetSection.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 </script>
 
