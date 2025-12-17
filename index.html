@@ -116,7 +116,6 @@
       color: #777;
     }
 
-    /* NEW: highlight effect for sign in/up section */
     .pulse {
       outline: 3px solid rgba(238, 46, 30, 0.4);
       box-shadow: 0 0 0 8px rgba(238, 46, 30, 0.15);
@@ -157,10 +156,8 @@
         <option value="">Select business</option>
       </select>
 
-      <!-- NEW: clearer button text -->
       <button type="submit">Continue to Sign In/Up</button>
 
-      <!-- NEW: clarity hint -->
       <p style="text-align:center;font-size:0.85rem;color:#666;margin:0;">
         Sign in/up is required to play the scratch card
       </p>
@@ -181,16 +178,22 @@
 
   <!-- STEP 3 -->
   <section class="card hidden" id="widget-section">
-    <h2>Scratch &amp; Win – <span id="widget-business-name"></span></h2>
+
+    <!-- CLEAN, MOBILE-SAFE HEADING FOR ALL BUSINESSES -->
+    <h2>Scratch &amp; Win</h2>
+    <p class="pill" style="margin-top:6px;">
+      Playing at <span id="widget-business-name"></span>
+    </p>
+
     <img id="biz-logo" class="biz-logo" alt="Business Logo">
 
     <div class="cn-wrapper">
 
-      <!-- Star Of Bengal (NEW PID) -->
+      <!-- Star Of Bengal -->
       <div id="widget-starofbengal"
            class="commonninja_component pid-d7da8f39-c303-4483-8886-9e67726eefb3 hidden"></div>
 
-      <!-- Green Chilli (PID as requested) -->
+      <!-- Green Chilli -->
       <div id="widget-greenchilli"
            class="commonninja_component pid-a681398a-7a0d-4da8-90d1-598d4137f6f5 hidden"></div>
 
@@ -241,7 +244,6 @@
     });
   });
 
-  // NEW: mobile-safe forced scroll + pulse highlight
   selectorForm.addEventListener("submit", e => {
     e.preventDefault();
 
@@ -295,7 +297,6 @@
     signupSection.classList.add("hidden");
     widgetSection.classList.remove("hidden");
 
-    // Scroll to scratch card section for a smooth flow on mobile
     setTimeout(() => {
       const y = widgetSection.getBoundingClientRect().top + window.pageYOffset - 20;
       window.scrollTo({ top: y, behavior: "smooth" });
