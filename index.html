@@ -98,11 +98,22 @@
       margin-bottom: 8px;
     }
 
+    /* UPDATED: smaller business logo so scratch card sits higher */
     .biz-logo {
       display: block;
-      margin: 8px auto 16px;
-      width: 70%;
-      max-width: 260px;
+      margin: 6px auto 10px;
+      width: auto;           /* important: don’t force it wide */
+      max-width: 240px;
+      max-height: 110px;     /* caps height on desktop */
+    }
+
+    /* UPDATED: even smaller on phones */
+    @media (max-width: 480px) {
+      .biz-logo {
+        max-width: 200px;
+        max-height: 80px;    /* caps height on mobile */
+        margin-bottom: 8px;
+      }
     }
 
     .cn-wrapper {
@@ -283,10 +294,17 @@
 
     widgetBizName.textContent = biz;
 
-    bizLogo.src =
-      biz === "Star Of Bengal" ? "starofbengal.png" :
-      biz === "Green Chilli" ? "greenchilli.png" :
-      "theganges.png";
+    // UPDATED: set logo and optionally fine-tune maxHeight per brand
+    if (biz === "Green Chilli") {
+      bizLogo.src = "greenchilli.png";
+      bizLogo.style.maxHeight = "80px";
+    } else if (biz === "The Ganges") {
+      bizLogo.src = "theganges.png";
+      bizLogo.style.maxHeight = "85px";
+    } else {
+      bizLogo.src = "starofbengal.png";
+      bizLogo.style.maxHeight = "90px";
+    }
 
     Object.values(widgets).forEach(id =>
       document.getElementById(id).classList.add("hidden")
@@ -306,3 +324,4 @@
 
 </body>
 </html>
+
