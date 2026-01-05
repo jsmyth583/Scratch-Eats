@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Scratch 'N' Eat – Instant Win Scratch Card</title>
+  <title>Scratchr – Instant Win Scratch Card</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- Common Ninja script -->
@@ -10,7 +10,9 @@
 
   <style>
     :root {
-      --red: #EE2E1E;
+      /* BRAND COLOURS */
+      --red: #EE2E1E;               /* EXACT brand red */
+      --red-rgb: 238, 46, 30;       /* rgb version for rgba() */
       --cream: #fff7e6;
       --dark: #222;
     }
@@ -71,6 +73,13 @@
       border-radius: 12px;
       border: 1px solid #d4d4d4;
       font-size: 1rem;
+      outline: none;
+    }
+
+    /* nice brand-consistent focus ring */
+    select:focus, input:focus {
+      border-color: var(--red);
+      box-shadow: 0 0 0 3px rgba(var(--red-rgb), 0.18);
     }
 
     form { display: grid; gap: 12px; }
@@ -83,7 +92,11 @@
       color: var(--cream);
       font-weight: 700;
       cursor: pointer;
+      transition: transform 0.05s ease, filter 0.15s ease;
     }
+
+    button:active { transform: scale(0.99); }
+    button:hover { filter: brightness(0.98); }
 
     .hidden { display: none !important; }
 
@@ -102,16 +115,16 @@
     .biz-logo {
       display: block;
       margin: 6px auto 10px;
-      width: auto;           /* important: don’t force it wide */
+      width: auto;
       max-width: 240px;
-      max-height: 110px;     /* caps height on desktop */
+      max-height: 110px;
     }
 
     /* UPDATED: even smaller on phones */
     @media (max-width: 480px) {
       .biz-logo {
         max-width: 200px;
-        max-height: 80px;    /* caps height on mobile */
+        max-height: 80px;
         margin-bottom: 8px;
       }
     }
@@ -127,9 +140,10 @@
       color: #777;
     }
 
+    /* NEW: pulse highlight uses the SAME brand red */
     .pulse {
-      outline: 3px solid rgba(238, 46, 30, 0.4);
-      box-shadow: 0 0 0 8px rgba(238, 46, 30, 0.15);
+      outline: 3px solid rgba(var(--red-rgb), 0.40);
+      box-shadow: 0 0 0 8px rgba(var(--red-rgb), 0.15);
       border-radius: 18px;
     }
   </style>
@@ -138,7 +152,8 @@
 <body>
 
 <header class="hero-header">
-  <img src="Scratch 'N' Eat Logo Design.png" class="hero-logo" alt="Scratch 'N' Eat Logo">
+  <!-- Swap this file to your new logo filename (e.g. scratchr-logo.png) -->
+  <img src="Scratch 'N' Eat Logo Design.png" class="hero-logo" alt="Scratchr Logo">
   <p class="tagline">Scratch. Win. Eat.</p>
 </header>
 
@@ -189,8 +204,6 @@
 
   <!-- STEP 3 -->
   <section class="card hidden" id="widget-section">
-
-    <!-- CLEAN, MOBILE-SAFE HEADING FOR ALL BUSINESSES -->
     <h2>Scratch &amp; Win</h2>
     <p class="pill" style="margin-top:6px;">
       Playing at <span id="widget-business-name"></span>
@@ -218,7 +231,7 @@
 </main>
 
 <footer>
-  © Scratch 'N' Eat
+  © Scratchr
 </footer>
 
 <script>
@@ -294,7 +307,6 @@
 
     widgetBizName.textContent = biz;
 
-    // UPDATED: set logo and optionally fine-tune maxHeight per brand
     if (biz === "Green Chilli") {
       bizLogo.src = "greenchilli.png";
       bizLogo.style.maxHeight = "80px";
@@ -324,4 +336,3 @@
 
 </body>
 </html>
-
